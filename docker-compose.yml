@@ -1,0 +1,27 @@
+﻿version: '3'
+
+services:
+  exampleblogapi:
+    image: exampleblogapi
+    build:
+      context: .
+      dockerfile: ExampleBlogApi/Dockerfile
+    ports:
+      - "${APP_HTTP_PORT:-8080}:8080"
+      - "${APP_HTTPS_PORT:-8081}:8081"
+    networks:
+      - example-network
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    networks:
+      - example-network
+
+networks:
+  example-network:
