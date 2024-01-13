@@ -1,7 +1,7 @@
-﻿version: '3'
+version: '3'
 
 services:
-  exampleblogapi:
+  api:
     image: exampleblogapi
     build:
       context: .
@@ -10,7 +10,7 @@ services:
       - "${APP_HTTP_PORT:-8080}:8080"
       - "${APP_HTTPS_PORT:-8081}:8081"
     networks:
-      - example-network
+      - app-network
 
   postgres:
     image: postgres
@@ -19,9 +19,11 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "${DB_PORT:-5432}:5432"
+      - "${POSTGRES_DB_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     networks:
-      - example-network
+      - app-network
 
 networks:
-  example-network:
+  app-network:
