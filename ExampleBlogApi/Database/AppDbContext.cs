@@ -1,21 +1,13 @@
 ﻿using ExampleBlogApi.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExampleBlogApi.Database;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
-    private readonly IConfiguration _configuration;
-
-    protected AppDbContext(IConfiguration configuration)
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-        _configuration = configuration;
     }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-    {
-        options.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
-    }
-
-    public DbSet<Post> Posts { get; set; }
 }

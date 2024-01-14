@@ -8,12 +8,11 @@ public class Comment
     [Key]
     public int Id { get; set; }
 
-    [Required]
-    public string Content { get; set; }
+    // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
+    public required string Content { get; set; }
 
     [ForeignKey(nameof(Post))]
-    [Required]
-    public int PostId { get; set; }
+    public required int PostId { get; set; }
 
-    public Post Post { get; set; }
+    public Post Post { get; set; } = default!;
 }

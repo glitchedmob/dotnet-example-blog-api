@@ -9,14 +9,14 @@ public class Post
     [Key]
     public int Id { get; set; }
 
-    [Required]
-    public string Slug { get; set; }
+    [MaxLength(255)]
+    public required string Slug { get; set; }
 
-    [Required]
-    public string Title { get; set; }
+    [MaxLength(255)]
+    public required string Title { get; set; }
 
-    [Required]
-    public string Content { get; set; }
+    // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
+    public required string Content { get; set; }
 
-    public ICollection<Comment> Comments { get; set; }
+    public ICollection<Comment> Comments { get; set; } = default!;
 }
