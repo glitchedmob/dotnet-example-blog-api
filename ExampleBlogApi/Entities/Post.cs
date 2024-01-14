@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ExampleBlogApi.Database;
 using ExampleBlogApi.Entities.Core;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ExampleBlogApi.Entities;
 
 [Index(nameof(Slug), IsUnique = true)]
-public class Post : ITimeStamped
+public class Post : ITimeStamped, ISoftDelete
 {
     [Key]
     public int Id { get; set; }
@@ -29,5 +31,15 @@ public class Post : ITimeStamped
 
     public DateTime UpdatedAt { get; set; }
 
+    public DateTime? DeletedAt { get; set; }
+
     public ICollection<Comment> Comments { get; set; } = default!;
+
+    public class Configuration(AppDbContext context) : IEntityTypeConfiguration<Post>
+    {
+        public void Configure(EntityTypeBuilder<Post> builder)
+        {
+            builder.HasQueryFilter(e => context.IncludeSoftDeletedEntities || e.Author.DeletedAt == null);
+        }
+    }
 }
