@@ -10,4 +10,7 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
+
+    public required DbSet<Post> Posts { get; set; }
+    public required DbSet<Comment> Comments { get; set; }
 }

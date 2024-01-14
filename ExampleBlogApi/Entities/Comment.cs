@@ -15,4 +15,9 @@ public class Comment
     public required int PostId { get; set; }
 
     public Post Post { get; set; } = default!;
+
+    [ForeignKey(nameof(Author))]
+    public required int AuthorId { get; set; }
+
+    public User Author { get; set; } = default!;
 }

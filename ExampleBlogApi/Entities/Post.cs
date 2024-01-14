@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExampleBlogApi.Entities;
@@ -17,6 +18,11 @@ public class Post
 
     // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
     public required string Content { get; set; }
+
+    [ForeignKey(nameof(Author))]
+    public required int AuthorId { get; set; }
+
+    public User Author { get; set; } = default!;
 
     public ICollection<Comment> Comments { get; set; } = default!;
 }
