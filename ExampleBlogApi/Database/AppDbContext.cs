@@ -1,4 +1,6 @@
-﻿using ExampleBlogApi.Entities;
+﻿using System.Linq.Expressions;
+using System.Reflection;
+using ExampleBlogApi.Entities;
 using ExampleBlogApi.Entities.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -6,12 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExampleBlogApi.Database;
 
-public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
+public sealed class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
-    public bool IncludeSoftDeletedEntities { get; set; } = false;
-
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
+        ChangeTracker.LazyLoadingEnabled = false;
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
@@ -44,14 +45,27 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
                     .HasDefaultValueSql("now()");
             }
 
+
             if (typeof(ISoftDelete).IsAssignableFrom(entityType.ClrType))
             {
-                builder.Entity(entityType.ClrType)
-                    .HasQueryFilter((ISoftDelete e) => IncludeSoftDeletedEntities || e.DeletedAt == null);
+
+                var method = typeof(AppDbContext)
+                    .GetMethod(nameof(BuildSoftDeleteFilter), BindingFlags.NonPublic | BindingFlags.Instance)!
+                    .MakeGenericMethod(entityType.ClrType);
+                var filter = method.Invoke(this, null);
+                builder.Entity(entityType.ClrType).HasQueryFilter((dynamic)filter!);
+
             }
         }
 
-        builder.ApplyConfiguration(new Post.Configuration(this));
-        builder.ApplyConfiguration(new Comment.Configuration(this));
+
+
+        builder.ApplyConfiguration(new Post.Configuration());
+        builder.ApplyConfiguration(new Comment.Configuration());
+    }
+
+    private Expression<Func<T, bool>> BuildSoftDeleteFilter<T>() where T : class, ISoftDelete
+    {
+        return entity => entity.DeletedAt == null;
     }
 }

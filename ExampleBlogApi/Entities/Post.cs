@@ -35,11 +35,11 @@ public class Post : ITimeStamped, ISoftDelete
 
     public ICollection<Comment> Comments { get; set; } = default!;
 
-    public class Configuration(AppDbContext context) : IEntityTypeConfiguration<Post>
+    public class Configuration : IEntityTypeConfiguration<Post>
     {
         public void Configure(EntityTypeBuilder<Post> builder)
         {
-            builder.HasQueryFilter(e => context.IncludeSoftDeletedEntities || e.Author.DeletedAt == null);
+            builder.HasQueryFilter(e =>  e.DeletedAt == null && e.Author.DeletedAt == null);
         }
     }
 }

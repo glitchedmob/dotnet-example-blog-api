@@ -1,0 +1,9 @@
+﻿version: '3.4'
+
+services:
+    api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+        volumes:
+            - ${USER_SECRETS_PATH}:/root/.microsoft/usersecrets:ro
+            - ${ASPNET_HTTPS_PATH}:/root/.aspnet/https:ro

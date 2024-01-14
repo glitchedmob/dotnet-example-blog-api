@@ -4,12 +4,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBlogApi", "ExampleBl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56DC0B2A-25A9-4D7B-B6C0-418924F9F015}"
 	ProjectSection(SolutionItems) = preProject
-		docker-compose.yml = docker-compose.yml
 		.env = .env
 		.env.example = .env.example
 		.gitignore = .gitignore
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "docker-compose", "docker-compose.dcproj", "{759C84F0-887A-40B4-B4FF-77070B13EF8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,5 +22,9 @@ Global
 		{0A4C4BF4-C260-49A6-80D8-701CE05CC0ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A4C4BF4-C260-49A6-80D8-701CE05CC0ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A4C4BF4-C260-49A6-80D8-701CE05CC0ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{759C84F0-887A-40B4-B4FF-77070B13EF8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{759C84F0-887A-40B4-B4FF-77070B13EF8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{759C84F0-887A-40B4-B4FF-77070B13EF8E}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{759C84F0-887A-40B4-B4FF-77070B13EF8E}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

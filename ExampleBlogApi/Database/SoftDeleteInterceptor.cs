@@ -37,14 +37,4 @@ public class SoftDeleteInterceptor : ISaveChangesInterceptor, IDbCommandIntercep
         }
         return result;
     }
-
-    public DbDataReader ReaderExecuted(DbCommand command, CommandExecutedEventData eventData, DbDataReader result)
-    {
-        if (eventData is { Context: AppDbContext appDbContext } && appDbContext.IncludeSoftDeletedEntities)
-        {
-            appDbContext.IncludeSoftDeletedEntities = false;
-        }
-
-        return result;
-    }
 }
