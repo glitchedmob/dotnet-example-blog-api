@@ -1,9 +1,9 @@
-﻿using Asp.Versioning;
-using ExampleBlogApi.Database;
+﻿using ExampleBlogApi.Database;
 using ExampleBlogApi.Dtos;
 using ExampleBlogApi.Entities;
 using ExampleBlogApi.Infrastructure.SoftDelete;
 using ExampleBlogApi.Mapping;
+using ExampleBlogApi.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SoftDeleteServices.Concrete;
@@ -23,7 +23,7 @@ public class PostsController : ControllerBase
         _softDeleteService = softDeleteService;
     }
 
-    [HttpGet]
+    [HttpGet(Name = nameof(GetPosts))]
     public async Task<ActionResult<IEnumerable<PostResponseDto>>> GetPosts([FromQuery] bool includeDeleted = false)
     {
         var postsQuery = _context.Posts.AsQueryable();
@@ -41,6 +41,14 @@ public class PostsController : ControllerBase
     public async Task<ActionResult<Post>> GetPostById(int id)
     {
         var post = await _context.Posts.FirstAsync(p => p.Id == id);
+
+        return Ok(post);
+    }
+
+    [HttpGet("slug/{slug}")]
+    public async Task<ActionResult<Post>> GetPostBySlug(string slug)
+    {
+        var post = await _context.Posts.FirstAsync(p => p.Slug == slug);
 
         return Ok(post);
     }

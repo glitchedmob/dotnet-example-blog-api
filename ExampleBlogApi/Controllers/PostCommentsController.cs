@@ -2,6 +2,7 @@
 using ExampleBlogApi.Dtos;
 using ExampleBlogApi.Entities;
 using ExampleBlogApi.Mapping;
+using ExampleBlogApi.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,7 @@ public class PostCommentsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<CommentResponseDto>> CreatePost(int postId,
+    public async Task<ActionResult<CommentResponseDto>> CreateCommentForPost(int postId,
         [FromBody] CreateCommentRequestDto request)
     {
         var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
@@ -38,5 +39,13 @@ public class PostCommentsController : ControllerBase
 
         return CreatedAtAction(nameof(CommentsController.GetCommentById), "Comments", new { id = comment.Id },
             comment.ToDto());
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<CommentResponseDto>>> GetComentsForPost(int postId)
+    {
+        var comments = await _context.Comments.Where(c => c.PostId == postId).ToListAsync();
+
+        return Ok(comments.Select(c => c.ToDto()));
     }
 }

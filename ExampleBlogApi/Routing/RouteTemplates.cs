@@ -1,4 +1,4 @@
-﻿namespace ExampleBlogApi;
+﻿namespace ExampleBlogApi.Routing;
 
 public static class RouteTemplates
 {
