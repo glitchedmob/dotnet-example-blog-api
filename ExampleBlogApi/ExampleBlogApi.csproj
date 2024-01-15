@@ -29,11 +29,11 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-    </ItemGroup>
+    <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Release'">
+        <Exec Command="mkdir $(OutputPath)openapi\v1" />
+        <Exec Command="dotnet swagger tofile --output $(OutputPath)/openapi/v1/openapi.yaml --yaml $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
+        <Exec Command="dotnet swagger tofile --output $(OutputPath)/openapi/v1/openapi.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
+    </Target>
 
     <ItemGroup>
       <Folder Include="Database\Migrations\" />
