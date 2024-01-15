@@ -32,7 +32,9 @@ public class Post : ITimeStamped, ISoftDelete
 
     public DateTime UpdatedAt { get; set; }
 
-    public byte SoftDeleteLevel { get; set; }
+    public byte DeleteLevel { get; set; }
+
+    public DateTime? DeletedAt { get; set; }
 
     public ICollection<Comment> Comments { get; set; } = default!;
 

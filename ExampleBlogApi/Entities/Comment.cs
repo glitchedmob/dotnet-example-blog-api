@@ -29,7 +29,9 @@ public class Comment : ITimeStamped, ISoftDelete
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
-    public byte SoftDeleteLevel { get; set; }
+    public byte DeleteLevel { get; set; }
+
+    public DateTime? DeletedAt { get; set; }
 
     public class Configuration : IEntityTypeConfiguration<Comment>
     {

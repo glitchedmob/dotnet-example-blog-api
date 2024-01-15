@@ -15,13 +15,13 @@ public static class SoftDeleteQueryFilterExtensions
         var filter = methodToCall
             .Invoke(null, new object[] { });
         entityData.SetQueryFilter((LambdaExpression)filter!);
-        entityData.AddIndex(entityData.FindProperty(nameof(ISoftDelete.SoftDeleteLevel))!);
+        entityData.AddIndex(entityData.FindProperty(nameof(ISoftDelete.DeleteLevel))!);
     }
 
     private static LambdaExpression GetCascadeSoftDeleteFilter<TEntity>()
         where TEntity : class, ISoftDelete
     {
-        Expression<Func<TEntity, bool>> filter = x => x.SoftDeleteLevel == 0;
+        Expression<Func<TEntity, bool>> filter = x => x.DeleteLevel == 0;
         return filter;
     }
 }
