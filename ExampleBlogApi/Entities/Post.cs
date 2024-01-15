@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ExampleBlogApi.Database;
-using ExampleBlogApi.Entities.Core;
+using ExampleBlogApi.Infrastructure.SoftDelete;
+using ExampleBlogApi.Infrastructure.TimeStamped;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,7 +32,7 @@ public class Post : ITimeStamped, ISoftDelete
 
     public DateTime UpdatedAt { get; set; }
 
-    public DateTime? DeletedAt { get; set; }
+    public byte SoftDeleteLevel { get; set; }
 
     public ICollection<Comment> Comments { get; set; } = default!;
 
@@ -39,7 +40,6 @@ public class Post : ITimeStamped, ISoftDelete
     {
         public void Configure(EntityTypeBuilder<Post> builder)
         {
-            builder.HasQueryFilter(e =>  e.DeletedAt == null && e.Author.DeletedAt == null);
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿using System.Linq.Expressions;
-using System.Reflection;
-using ExampleBlogApi.Entities;
-using ExampleBlogApi.Entities.Core;
+﻿using ExampleBlogApi.Entities;
+using ExampleBlogApi.Infrastructure.SoftDelete;
+using ExampleBlogApi.Infrastructure.TimeStamped;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +18,6 @@ public sealed class AppDbContext : IdentityDbContext<User, IdentityRole<int>, in
     {
         base.OnConfiguring(options);
 
-        options.AddInterceptors(new SoftDeleteInterceptor());
         options.AddInterceptors(new TimeStampInterceptor());
     }
 
@@ -48,24 +46,11 @@ public sealed class AppDbContext : IdentityDbContext<User, IdentityRole<int>, in
 
             if (typeof(ISoftDelete).IsAssignableFrom(entityType.ClrType))
             {
-
-                var method = typeof(AppDbContext)
-                    .GetMethod(nameof(BuildSoftDeleteFilter), BindingFlags.NonPublic | BindingFlags.Instance)!
-                    .MakeGenericMethod(entityType.ClrType);
-                var filter = method.Invoke(this, null);
-                builder.Entity(entityType.ClrType).HasQueryFilter((dynamic)filter!);
-
+                entityType.SetSoftDeleteQueryFilter();
             }
         }
 
-
-
         builder.ApplyConfiguration(new Post.Configuration());
         builder.ApplyConfiguration(new Comment.Configuration());
-    }
-
-    private Expression<Func<T, bool>> BuildSoftDeleteFilter<T>() where T : class, ISoftDelete
-    {
-        return entity => entity.DeletedAt == null;
     }
 }

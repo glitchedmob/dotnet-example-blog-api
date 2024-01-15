@@ -1,7 +1,10 @@
+using System.Reflection;
 using ExampleBlogApi.Database;
 using ExampleBlogApi.Entities;
+using ExampleBlogApi.Infrastructure.SoftDelete;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SoftDeleteServices.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,9 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddIdentityApiEndpoints<User>()
     .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.RegisterSoftDelServicesAndYourConfigurations(
+    Assembly.GetAssembly(typeof(ConfigCascadeDelete)));
 
 var app = builder.Build();
 

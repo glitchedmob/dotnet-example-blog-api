@@ -1,4 +1,4 @@
-﻿namespace ExampleBlogApi.Entities.Core;
+﻿namespace ExampleBlogApi.Infrastructure.TimeStamped;
 
 public interface ITimeStamped
 {
