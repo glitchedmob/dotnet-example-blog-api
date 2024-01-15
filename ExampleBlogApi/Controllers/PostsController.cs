@@ -24,14 +24,15 @@ public class PostsController : ControllerBase
     }
 
     [HttpGet(Name = nameof(GetPosts))]
-    public async Task<ActionResult<IEnumerable<PostResponseDto>>> GetPosts([FromQuery] bool includeDeleted = false)
+    public async Task<ActionResult<IEnumerable<PostResponseDto>>> GetPosts([FromQuery] GetPostsRequestDto request)
     {
         var postsQuery = _context.Posts.AsQueryable();
 
-        if (includeDeleted)
+        if (request.IncludeDeleted)
         {
             postsQuery = _softDeleteService.GetSoftDeletedEntries<Post>();
         }
+
         var posts = await postsQuery.ToListAsync();
 
         return Ok(posts.Select(p => p.ToDto()));

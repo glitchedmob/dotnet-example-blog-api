@@ -24,11 +24,11 @@ public class CommentsController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CommentResponseDto>>> GetComments(
-        [FromQuery] bool includeDeleted = false)
+        [FromQuery] GetCommentsRequestDto request)
     {
         var commentsQuery = _context.Comments.AsQueryable();
 
-        if (includeDeleted)
+        if (request.IncludeDeleted)
         {
             commentsQuery = commentsQuery.IgnoreQueryFilters();
         }
