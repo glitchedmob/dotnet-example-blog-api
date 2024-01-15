@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExampleBlogApi.Controllers;
 
-[Route("api/[controller]")]
+[Route(RouteTemplates.Comments)]
 [ApiController]
 public class CommentsController : ControllerBase
 {

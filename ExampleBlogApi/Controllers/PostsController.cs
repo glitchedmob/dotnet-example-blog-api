@@ -1,4 +1,5 @@
-﻿using ExampleBlogApi.Database;
+﻿using Asp.Versioning;
+using ExampleBlogApi.Database;
 using ExampleBlogApi.Dtos;
 using ExampleBlogApi.Entities;
 using ExampleBlogApi.Infrastructure.SoftDelete;
@@ -9,7 +10,7 @@ using SoftDeleteServices.Concrete;
 
 namespace ExampleBlogApi.Controllers;
 
-[Route("api/[controller]")]
+[Route(RouteTemplates.Posts)]
 [ApiController]
 public class PostsController : ControllerBase
 {
