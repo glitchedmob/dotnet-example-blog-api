@@ -4,6 +4,10 @@ namespace ExampleBlogApi.Dtos.Core;
 
 public class BaseGetQueryOptionsDto
 {
+    [FromQuery(Name = "createdAt")]
+    public FilterOption<DateTime?>? CreatedAt { get; set; }
+    [FromQuery(Name = "updatedAt")]
+    public FilterOption<DateTime?>? UpdatedAt { get; set; }
     [FromQuery(Name = "searchText")]
     public string? SearchText { get; set; }
     [FromQuery(Name = "includeDeleted")]
@@ -13,5 +17,5 @@ public class BaseGetQueryOptionsDto
     /// Multiple sort options can be provided.
     /// </summary>
     [FromQuery(Name = "sort[]")]
-    public List<SortOption> SortOptions { get; set; } = new();
+    public List<SortOption>? SortOptions { get; set; }
 }
