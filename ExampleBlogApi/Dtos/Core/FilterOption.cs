@@ -15,7 +15,7 @@ public class FilterOption<T>
     [FromQuery(Name = "[eq]")]
     public T? EqualTo { get; set; }
     [FromQuery(Name = "[in]")]
-    public T[]? In { get; set; }
+    public List<T> In { get; set; } = new();
     [FromQuery(Name = "[gt]")]
     public T? GreaterThan { get; set; }
     [FromQuery(Name = "[lt]")]

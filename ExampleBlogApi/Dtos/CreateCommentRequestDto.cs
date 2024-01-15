@@ -2,5 +2,5 @@
 
 public class CreateCommentRequestDto
 {
-    public string Content { get; set; }
+    public required string Content { get; set; }
 }
