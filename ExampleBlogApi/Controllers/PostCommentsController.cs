@@ -1,4 +1,4 @@
-﻿using ExampleBlogApi.Database;
+using ExampleBlogApi.Database;
 using ExampleBlogApi.Dtos;
 using ExampleBlogApi.Entities;
 using ExampleBlogApi.Mapping;

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ExampleBlogApi.Database;
 using ExampleBlogApi.Infrastructure.SoftDelete;

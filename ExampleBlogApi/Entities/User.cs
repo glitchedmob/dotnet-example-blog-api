@@ -1,4 +1,4 @@
-﻿using ExampleBlogApi.Infrastructure.SoftDelete;
+using ExampleBlogApi.Infrastructure.SoftDelete;
 using Microsoft.AspNetCore.Identity;
 
 namespace ExampleBlogApi.Entities;

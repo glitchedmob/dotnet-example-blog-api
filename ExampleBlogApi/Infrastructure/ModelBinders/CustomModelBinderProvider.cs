@@ -1,4 +1,4 @@
-﻿using ExampleBlogApi.Dtos.Core;
+using ExampleBlogApi.Dtos.Core;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ExampleBlogApi.Infrastructure.ModelBinders;

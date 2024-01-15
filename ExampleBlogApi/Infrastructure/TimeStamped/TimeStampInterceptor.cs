@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace ExampleBlogApi.Infrastructure.TimeStamped;
@@ -14,7 +14,7 @@ public class TimeStampInterceptor : SaveChangesInterceptor
 
         foreach (var entry in eventData.Context.ChangeTracker.Entries())
         {
-            if (entry is not { State: EntityState.Added or EntityState.Modified , Entity: ITimeStamped entity })
+            if (entry is not { State: EntityState.Added or EntityState.Modified, Entity: ITimeStamped entity })
             {
                 continue;
             };

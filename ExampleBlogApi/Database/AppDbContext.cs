@@ -1,4 +1,4 @@
-﻿using ExampleBlogApi.Entities;
+using ExampleBlogApi.Entities;
 using ExampleBlogApi.Infrastructure.SoftDelete;
 using ExampleBlogApi.Infrastructure.TimeStamped;
 using Microsoft.AspNetCore.Identity;

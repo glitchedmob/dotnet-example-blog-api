@@ -1,4 +1,4 @@
-﻿using ExampleBlogApi.Dtos.Core;
+using ExampleBlogApi.Dtos.Core;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;

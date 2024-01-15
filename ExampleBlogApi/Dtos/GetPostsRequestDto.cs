@@ -1,4 +1,4 @@
-﻿using ExampleBlogApi.Dtos.Core;
+using ExampleBlogApi.Dtos.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExampleBlogApi.Dtos;

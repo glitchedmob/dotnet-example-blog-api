@@ -1,4 +1,4 @@
-﻿namespace ExampleBlogApi.Dtos;
+namespace ExampleBlogApi.Dtos;
 
 public class PostResponseDto
 {

@@ -1,4 +1,4 @@
-﻿namespace ExampleBlogApi.Infrastructure.SoftDelete;
+namespace ExampleBlogApi.Infrastructure.SoftDelete;
 
 public interface ISoftDelete
 {

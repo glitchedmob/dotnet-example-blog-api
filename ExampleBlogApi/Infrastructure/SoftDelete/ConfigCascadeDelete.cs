@@ -1,4 +1,4 @@
-﻿using ExampleBlogApi.Database;
+using ExampleBlogApi.Database;
 using SoftDeleteServices.Configuration;
 
 namespace ExampleBlogApi.Infrastructure.SoftDelete;
