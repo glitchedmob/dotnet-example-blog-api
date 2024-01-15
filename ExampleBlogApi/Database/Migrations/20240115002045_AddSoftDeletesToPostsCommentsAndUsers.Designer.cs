@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExampleBlogApi.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240114030401_AddSoftDeletesToPostsCommentsAndUsers")]
+    [Migration("20240115002045_AddSoftDeletesToPostsCommentsAndUsers")]
     partial class AddSoftDeletesToPostsCommentsAndUsers
     {
         /// <inheritdoc />
@@ -45,11 +45,11 @@ namespace ExampleBlogApi.Database.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("now()");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int>("PostId")
                         .HasColumnType("integer");
+
+                    b.Property<byte>("SoftDeleteLevel")
+                        .HasColumnType("smallint");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
@@ -61,6 +61,8 @@ namespace ExampleBlogApi.Database.Migrations
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("PostId");
+
+                    b.HasIndex("SoftDeleteLevel");
 
                     b.ToTable("Comments");
                 });
@@ -85,13 +87,13 @@ namespace ExampleBlogApi.Database.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("now()");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
+
+                    b.Property<byte>("SoftDeleteLevel")
+                        .HasColumnType("smallint");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -110,6 +112,8 @@ namespace ExampleBlogApi.Database.Migrations
                     b.HasIndex("Slug")
                         .IsUnique();
 
+                    b.HasIndex("SoftDeleteLevel");
+
                     b.ToTable("Posts");
                 });
 
@@ -127,9 +131,6 @@ namespace ExampleBlogApi.Database.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -164,6 +165,9 @@ namespace ExampleBlogApi.Database.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
+                    b.Property<byte>("SoftDeleteLevel")
+                        .HasColumnType("smallint");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
@@ -179,6 +183,8 @@ namespace ExampleBlogApi.Database.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("SoftDeleteLevel");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
