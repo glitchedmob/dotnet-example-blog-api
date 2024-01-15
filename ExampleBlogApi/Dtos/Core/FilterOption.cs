@@ -12,16 +12,16 @@ public class FilterOption<T>
         }
     }
 
-    [FromQuery(Name = "[eq]")]
+    [FromQuery(Name = "eq")]
     public T? EqualTo { get; set; }
-    [FromQuery(Name = "[in]")]
+    [FromQuery(Name = "in")]
     public List<T> In { get; set; } = new();
-    [FromQuery(Name = "[gt]")]
+    [FromQuery(Name = "gt")]
     public T? GreaterThan { get; set; }
-    [FromQuery(Name = "[lt]")]
+    [FromQuery(Name = "lt")]
     public T? LessThan { get; set; }
-    [FromQuery(Name = "[gte]")]
+    [FromQuery(Name = "gte")]
     public T? GreaterThanOrEqualTo { get; set; }
-    [FromQuery(Name = "[lte]")]
+    [FromQuery(Name = "lte")]
     public T? LessThanOrEqualTo { get; set; }
 }

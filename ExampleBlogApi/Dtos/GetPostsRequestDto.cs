@@ -5,11 +5,11 @@ namespace ExampleBlogApi.Dtos;
 
 public class GetPostsRequestDto : BaseGetQueryOptionsDto
 {
-    [FromQuery(Name = "id[]")]
+    [FromQuery(Name = "id")]
     public List<int>? Ids { get; set; }
-    [FromQuery(Name = "slug[]")]
+    [FromQuery(Name = "slug")]
     public List<string>? Slugs { get; set; }
-    [FromQuery(Name = "authorId[]")]
+    [FromQuery(Name = "authorId")]
     public List<int>? AuthorIds { get; set; }
 }
 

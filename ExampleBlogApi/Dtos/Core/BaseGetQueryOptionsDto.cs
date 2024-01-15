@@ -16,6 +16,6 @@ public class BaseGetQueryOptionsDto
     /// Sort options in the format of 'field:order', where 'order' can be 'asc' or 'desc'.
     /// Multiple sort options can be provided.
     /// </summary>
-    [FromQuery(Name = "sort[]")]
+    [FromQuery(Name = "sort")]
     public List<SortOption>? SortOptions { get; set; }
 }
