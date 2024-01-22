@@ -1,5 +1,6 @@
 using ExampleBlogApi.Dtos.Core;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace ExampleBlogApi.Infrastructure.ModelBinders;
 
@@ -9,7 +10,8 @@ public class CustomModelBinderProvider : IModelBinderProvider
     {
         if (context.Metadata.ModelType == typeof(SortOption))
         {
-            return new SortOptionModelBinder();
+            var binderType = typeof(SortOptionModelBinder);
+            return new BinderTypeModelBinder(binderType);
         }
 
         return null;
