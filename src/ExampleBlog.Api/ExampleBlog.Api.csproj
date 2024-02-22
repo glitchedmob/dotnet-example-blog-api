@@ -39,4 +39,9 @@
       <Folder Include="Database\Migrations\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ExampleBlog.Core\ExampleBlog.Core.csproj" />
+      <ProjectReference Include="..\ExampleBlog.Services\ExampleBlog.Services.csproj" />
+    </ItemGroup>
+
 </Project>
