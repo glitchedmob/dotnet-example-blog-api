@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{48548935-1796-45A9-8DE7-6CBAC2B0517F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBlogApi", "src\ExampleBlogApi\ExampleBlogApi.csproj", "{D77754F5-C05A-4352-B8EC-25094C8780F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBlog.Api", "src\ExampleBlog.Api\ExampleBlog.Api.csproj", "{D77754F5-C05A-4352-B8EC-25094C8780F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

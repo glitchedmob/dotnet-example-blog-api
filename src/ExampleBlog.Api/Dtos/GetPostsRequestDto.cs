@@ -1,0 +1,15 @@
+using ExampleBlog.Api.Dtos.Core;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ExampleBlog.Api.Dtos;
+
+public class GetPostsRequestDto : BaseGetQueryOptionsDto
+{
+    [FromQuery(Name = "id")]
+    public List<int>? Ids { get; set; }
+    [FromQuery(Name = "slug")]
+    public List<string>? Slugs { get; set; }
+    [FromQuery(Name = "authorId")]
+    public List<int>? AuthorIds { get; set; }
+}
+
