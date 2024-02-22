@@ -5,6 +5,7 @@ using ExampleBlog.Api.Entities;
 using ExampleBlog.Api.Infrastructure.ModelBinders;
 using ExampleBlog.Api.Infrastructure.SoftDelete;
 using ExampleBlog.Api.Infrastructure.Swagger;
+using ExampleBlog.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
 using SoftDeleteServices.Configuration;
@@ -42,6 +43,8 @@ builder.Services.AddSwaggerGen(options =>
     options.ApplySwaggerSchemaCustomizations();
 });
 builder.Services.AddSwaggerGenNewtonsoftSupport();
+
+builder.Services.AddApplicationServices(builder.Configuration);
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
