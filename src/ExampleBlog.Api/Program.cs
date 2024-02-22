@@ -1,14 +1,10 @@
 using System.Reflection;
 using Asp.Versioning;
-using ExampleBlog.Api.Database;
-using ExampleBlog.Api.Entities;
 using ExampleBlog.Api.Infrastructure.ModelBinders;
-using ExampleBlog.Api.Infrastructure.SoftDelete;
 using ExampleBlog.Api.Infrastructure.Swagger;
+using ExampleBlog.Core.Entities;
 using ExampleBlog.Services;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
-using SoftDeleteServices.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,15 +42,8 @@ builder.Services.AddSwaggerGenNewtonsoftSupport();
 
 builder.Services.AddApplicationServices(builder.Configuration);
 
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.RegisterSoftDelServicesAndYourConfigurations(
-    Assembly.GetAssembly(typeof(ConfigCascadeDelete)));
-
 builder.Services.AddIdentityApiEndpoints<User>()
-    .AddEntityFrameworkStores<AppDbContext>();
+    .AddIdentityServices();
 
 builder.Services.AddAuthorization();
 

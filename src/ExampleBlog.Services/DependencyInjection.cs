@@ -1,4 +1,6 @@
-﻿using ExampleBlog.Infrastructure;
+﻿using ExampleBlog.Core.Entities;
+using ExampleBlog.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,5 +12,10 @@ public static class DependencyInjection
     {
         services.AddInfrastructure(configuration);
         return services;
+    }
+
+    public static IdentityBuilder AddIdentityServices(this IdentityBuilder builder)
+    {
+        return builder.AddIdentityInfrastructure();
     }
 }

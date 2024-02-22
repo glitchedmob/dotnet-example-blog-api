@@ -1,5 +1,5 @@
 using ExampleBlog.Api.Dtos;
-using ExampleBlog.Api.Entities;
+using ExampleBlog.Core.Entities;
 
 namespace ExampleBlog.Api.Mapping;
 

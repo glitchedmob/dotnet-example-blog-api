@@ -1,4 +1,4 @@
-namespace ExampleBlog.Api.Infrastructure.SoftDelete;
+namespace ExampleBlog.Core.Entities.Behaviors;
 
 public interface ISoftDelete
 {

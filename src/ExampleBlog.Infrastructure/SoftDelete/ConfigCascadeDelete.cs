@@ -1,7 +1,7 @@
-using ExampleBlog.Api.Database;
+using ExampleBlog.Core.Entities.Behaviors;
 using SoftDeleteServices.Configuration;
 
-namespace ExampleBlog.Api.Infrastructure.SoftDelete;
+namespace ExampleBlog.Infrastructure.SoftDelete;
 
 public class ConfigCascadeDelete : CascadeSoftDeleteConfiguration<ISoftDelete>
 {

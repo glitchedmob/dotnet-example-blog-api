@@ -15,15 +15,8 @@
     <ItemGroup>
         <PackageReference Include="Asp.Versioning.Mvc" Version="8.0.0" />
         <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.0.0" />
-        <PackageReference Include="EfCore.SoftDeleteServices" Version="4.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
@@ -34,10 +27,6 @@
         <Exec Command="dotnet swagger tofile --output $(OutputPath)/openapi/v1/openapi.yaml --yaml $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
         <Exec Command="dotnet swagger tofile --output $(OutputPath)/openapi/v1/openapi.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
     </Target>
-
-    <ItemGroup>
-      <Folder Include="Database\Migrations\" />
-    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\ExampleBlog.Core\ExampleBlog.Core.csproj" />

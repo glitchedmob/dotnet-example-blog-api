@@ -1,8 +1,9 @@
 using ExampleBlog.Api.Database;
 using ExampleBlog.Api.Dtos;
-using ExampleBlog.Api.Entities;
 using ExampleBlog.Api.Routing;
 using ExampleBlog.Api.Mapping;
+using ExampleBlog.Core.Entities;
+using ExampleBlog.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

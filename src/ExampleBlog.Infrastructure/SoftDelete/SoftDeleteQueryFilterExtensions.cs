@@ -1,8 +1,9 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using ExampleBlog.Core.Entities.Behaviors;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace ExampleBlog.Api.Infrastructure.SoftDelete;
+namespace ExampleBlog.Infrastructure.SoftDelete;
 
 public static class SoftDeleteQueryFilterExtensions
 {

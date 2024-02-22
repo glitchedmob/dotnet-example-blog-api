@@ -1,12 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ExampleBlog.Api.Infrastructure.SoftDelete;
-using ExampleBlog.Api.Infrastructure.TimeStamped;
-using ExampleBlog.Api.Database;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ExampleBlog.Core.Entities.Behaviors;
 
-namespace ExampleBlog.Api.Entities;
+namespace ExampleBlog.Core.Entities;
 
 public class Comment : ITimeStamped, ISoftDelete
 {
@@ -32,11 +28,4 @@ public class Comment : ITimeStamped, ISoftDelete
     public byte DeleteLevel { get; set; }
 
     public DateTime? DeletedAt { get; set; }
-
-    public class Configuration : IEntityTypeConfiguration<Comment>
-    {
-        public void Configure(EntityTypeBuilder<Comment> builder)
-        {
-        }
-    }
 }

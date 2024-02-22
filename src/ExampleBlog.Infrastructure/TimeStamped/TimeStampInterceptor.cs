@@ -1,7 +1,8 @@
+using ExampleBlog.Core.Entities.Behaviors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace ExampleBlog.Api.Infrastructure.TimeStamped;
+namespace ExampleBlog.Infrastructure.TimeStamped;
 
 public class TimeStampInterceptor : SaveChangesInterceptor
 {

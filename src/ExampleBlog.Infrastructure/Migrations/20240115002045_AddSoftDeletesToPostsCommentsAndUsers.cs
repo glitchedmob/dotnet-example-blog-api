@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ExampleBlog.Api.Database.Migrations
+namespace ExampleBlog.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class AddSoftDeletesToPostsCommentsAndUsers : Migration

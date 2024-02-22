@@ -1,4 +1,4 @@
-namespace ExampleBlog.Api.Infrastructure.TimeStamped;
+namespace ExampleBlog.Core.Entities.Behaviors;
 
 public interface ITimeStamped
 {

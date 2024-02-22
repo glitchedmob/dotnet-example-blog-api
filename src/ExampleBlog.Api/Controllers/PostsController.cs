@@ -1,9 +1,10 @@
 using ExampleBlog.Api.Database;
 using ExampleBlog.Api.Dtos;
-using ExampleBlog.Api.Entities;
-using ExampleBlog.Api.Infrastructure.SoftDelete;
 using ExampleBlog.Api.Routing;
 using ExampleBlog.Api.Mapping;
+using ExampleBlog.Core.Entities;
+using ExampleBlog.Core.Entities.Behaviors;
+using ExampleBlog.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SoftDeleteServices.Concrete;

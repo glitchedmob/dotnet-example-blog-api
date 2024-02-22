@@ -1,11 +1,13 @@
-using ExampleBlog.Api.Entities;
-using ExampleBlog.Api.Infrastructure.SoftDelete;
-using ExampleBlog.Api.Infrastructure.TimeStamped;
+using ExampleBlog.Core.Entities;
+using ExampleBlog.Core.Entities.Behaviors;
+using ExampleBlog.Infrastructure.EntityConfiguration;
+using ExampleBlog.Infrastructure.SoftDelete;
+using ExampleBlog.Infrastructure.TimeStamped;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExampleBlog.Api.Database;
+namespace ExampleBlog.Infrastructure;
 
 public sealed class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
@@ -50,7 +52,7 @@ public sealed class AppDbContext : IdentityDbContext<User, IdentityRole<int>, in
             }
         }
 
-        builder.ApplyConfiguration(new Post.Configuration());
-        builder.ApplyConfiguration(new Comment.Configuration());
+        builder.ApplyConfiguration(new PostConfiguration());
+        builder.ApplyConfiguration(new CommentConfiguration());
     }
 }

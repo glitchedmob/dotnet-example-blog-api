@@ -1,7 +1,7 @@
-using ExampleBlog.Api.Infrastructure.SoftDelete;
+using ExampleBlog.Core.Entities.Behaviors;
 using Microsoft.AspNetCore.Identity;
 
-namespace ExampleBlog.Api.Entities;
+namespace ExampleBlog.Core.Entities;
 
 public class User : IdentityUser<int>, ISoftDelete
 {
