@@ -1,4 +1,6 @@
-namespace ExampleBlog.Api.Dtos.Core;
+using ExampleBlog.Core.Domain.Common;
+
+namespace ExampleBlog.Api.Dtos.Common;
 
 public class SortOption
 {

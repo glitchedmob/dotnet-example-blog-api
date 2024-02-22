@@ -1,11 +1,9 @@
-using ExampleBlog.Api.Database;
+using AutoMapper;
 using ExampleBlog.Api.Dtos;
 using ExampleBlog.Api.Routing;
-using ExampleBlog.Api.Mapping;
-using ExampleBlog.Core.Entities;
-using ExampleBlog.Infrastructure;
+using ExampleBlog.Core.Domain;
+using ExampleBlog.Core.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ExampleBlog.Api.Controllers;
 
@@ -13,40 +11,33 @@ namespace ExampleBlog.Api.Controllers;
 [ApiController]
 public class PostCommentsController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly ICommentService _commentService;
+    private readonly IMapper _mapper;
 
-    public PostCommentsController(AppDbContext context)
+    public PostCommentsController(ICommentService commentService, IMapper mapper)
     {
-        _context = context;
+        _commentService = commentService;
+        _mapper = mapper;
     }
 
     [HttpPost]
     public async Task<ActionResult<CommentResponseDto>> CreateCommentForPost(int postId,
         [FromBody] CreateCommentRequestDto request)
     {
-        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
-        var user = await _context.Users.FirstOrDefaultAsync();
+        var newComment = _mapper.Map<CreateComment>(request);
 
-        var comment = new Comment
-        {
-            Content = request.Content,
-            PostId = post!.Id,
-            AuthorId = user!.Id,
-        };
+        var comment = await _commentService.CreateCommentForPost(postId, newComment);
 
-        _context.Add(comment);
-
-        await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(CommentsController.GetCommentById), "Comments", new { id = comment.Id },
-            comment.ToDto());
+            _mapper.Map<CommentResponseDto>(comment));
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CommentResponseDto>>> GetComentsForPost(int postId)
     {
-        var comments = await _context.Comments.Where(c => c.PostId == postId).ToListAsync();
+        var comments = await _commentService.GetCommentsForPost(postId);
 
-        return Ok(comments.Select(c => c.ToDto()));
+        return Ok(_mapper.Map<IEnumerable<CommentResponseDto>>(comments));
     }
 }

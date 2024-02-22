@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace ExampleBlog.Api.Dtos.Core;
+namespace ExampleBlog.Core.Domain.Common;
 
 public enum SortOrder
 {

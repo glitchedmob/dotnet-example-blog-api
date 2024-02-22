@@ -1,13 +1,11 @@
-using ExampleBlog.Api.Database;
+using AutoMapper;
 using ExampleBlog.Api.Dtos;
 using ExampleBlog.Api.Routing;
 using ExampleBlog.Api.Mapping;
+using ExampleBlog.Core.Domain;
 using ExampleBlog.Core.Entities;
-using ExampleBlog.Core.Entities.Behaviors;
-using ExampleBlog.Infrastructure;
+using ExampleBlog.Core.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SoftDeleteServices.Concrete;
 
 namespace ExampleBlog.Api.Controllers;
 
@@ -15,72 +13,55 @@ namespace ExampleBlog.Api.Controllers;
 [ApiController]
 public class PostsController : ControllerBase
 {
-    private readonly AppDbContext _context;
-    private readonly CascadeSoftDelServiceAsync<ISoftDelete> _softDeleteService;
+    private readonly IPostService _postService;
+    private readonly IMapper _mapper;
 
-    public PostsController(AppDbContext context, CascadeSoftDelServiceAsync<ISoftDelete> softDeleteService)
+    public PostsController(IPostService postService, IMapper mapper)
     {
-        _context = context;
-        _softDeleteService = softDeleteService;
+        _postService = postService;
+        _mapper = mapper;
     }
 
     [HttpGet(Name = nameof(GetPosts))]
     public async Task<ActionResult<IEnumerable<PostResponseDto>>> GetPosts([FromQuery] GetPostsRequestDto request)
     {
-        var postsQuery = _context.Posts.AsQueryable();
+        var criteria = _mapper.Map<PostsQueryCriteria>(request);
 
-        if (request.IncludeDeleted)
-        {
-            postsQuery = _softDeleteService.GetSoftDeletedEntries<Post>();
-        }
+        var posts = await _postService.GetPosts(criteria);
 
-        var posts = await postsQuery.ToListAsync();
-
-        return Ok(posts.Select(p => p.ToDto()));
+        return Ok(_mapper.Map<IEnumerable<PostResponseDto>>(posts));
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<Post>> GetPostById(int id)
+    public async Task<ActionResult<PostResponseDto>> GetPostById(int id)
     {
-        var post = await _context.Posts.FirstAsync(p => p.Id == id);
+        var post = await _postService.GetPostById(id);
 
-        return Ok(post);
+        return Ok(_mapper.Map<PostResponseDto>(post));
     }
 
     [HttpGet("slug/{slug}")]
-    public async Task<ActionResult<Post>> GetPostBySlug(string slug)
+    public async Task<ActionResult<PostResponseDto>> GetPostBySlug(string slug)
     {
-        var post = await _context.Posts.FirstAsync(p => p.Slug == slug);
+        var post = await _postService.GetPostBySlug(slug);
 
-        return Ok(post);
+        return Ok(_mapper.Map<PostResponseDto>(post));
     }
 
     [HttpPost]
     public async Task<ActionResult<PostResponseDto>> CreatePost([FromBody] CreatePostRequestDto request)
     {
-        var user = await _context.Users.FirstAsync();
+        var newPost = _mapper.Map<CreatePost>(request);
 
-        var post = new Post
-        {
-            Title = request.Title,
-            Content = request.Content,
-            Slug = request.Slug ?? request.Title.ToLower().Replace(" ", "-"),
-            AuthorId = user!.Id,
-        };
+        var post = await _postService.CreatePost(newPost);
 
-        _context.Add(post);
-
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetPostById), new { id = post.Id }, post.ToDto());
+        return CreatedAtAction(nameof(GetPostById), new { id = post.Id }, _mapper.Map<PostResponseDto>(post));
     }
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeletePost(int id)
     {
-        var post = await _context.Posts.FirstAsync(p => p.Id == id);
-
-        await _softDeleteService.SetCascadeSoftDeleteAsync(post);
+        await _postService.DeletePostById(id);
 
         return NoContent();
     }

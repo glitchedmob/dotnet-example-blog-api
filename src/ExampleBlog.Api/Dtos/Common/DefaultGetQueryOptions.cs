@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace ExampleBlog.Api.Dtos.Core;
+namespace ExampleBlog.Api.Dtos.Common;
 
-public class BaseGetQueryOptionsDto
+public class DefaultGetQueryOptions
 {
     [FromQuery(Name = "createdAt")]
     public FilterOption<DateTime?>? CreatedAt { get; set; }

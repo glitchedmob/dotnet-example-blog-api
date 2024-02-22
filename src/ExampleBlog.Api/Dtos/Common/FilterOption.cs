@@ -1,8 +1,7 @@
 using ExampleBlog.Api.Infrastructure.ModelBinders;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace ExampleBlog.Api.Dtos.Core;
+namespace ExampleBlog.Api.Dtos.Common;
 
 public class FilterOption<TOptionType>
 {
@@ -26,11 +25,3 @@ public class FilterOption<TOptionType>
     public TOptionType? LessThanOrEqualTo { get; set; }
 }
 
-
-public class GetProductsDto
-{
-    [FromQuery(Name = "createdAt")]
-    public FilterOption<DateTime?> CreatedAt { get; set; }
-    [FromQuery(Name = "price")]
-    public FilterOption<int?> Price { get; set; }
-}

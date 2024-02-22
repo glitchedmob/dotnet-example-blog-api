@@ -1,5 +1,6 @@
-using ExampleBlog.Api.Dtos.Core;
 using ExampleBlog.Api.Dtos;
+using ExampleBlog.Api.Dtos.Common;
+using ExampleBlog.Core.Domain.Common;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ExampleBlog.Api.Infrastructure.ModelBinders;

@@ -1,12 +1,9 @@
-using ExampleBlog.Api.Database;
+using AutoMapper;
 using ExampleBlog.Api.Dtos;
 using ExampleBlog.Api.Routing;
-using ExampleBlog.Api.Mapping;
-using ExampleBlog.Core.Entities.Behaviors;
-using ExampleBlog.Infrastructure;
+using ExampleBlog.Core.Domain;
+using ExampleBlog.Core.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SoftDeleteServices.Concrete;
 
 namespace ExampleBlog.Api.Controllers;
 
@@ -14,57 +11,48 @@ namespace ExampleBlog.Api.Controllers;
 [ApiController]
 public class CommentsController : ControllerBase
 {
-    private readonly AppDbContext _context;
-    private readonly CascadeSoftDelServiceAsync<ISoftDelete> _softDeleteService;
+    private readonly ICommentService _commentService;
+    private readonly IMapper _mapper;
 
-    public CommentsController(AppDbContext context, CascadeSoftDelServiceAsync<ISoftDelete> softDeleteService)
+    public CommentsController(ICommentService commentService, IMapper mapper)
     {
-        _context = context;
-        _softDeleteService = softDeleteService;
+        _commentService = commentService;
+        _mapper = mapper;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CommentResponseDto>>> GetComments(
         [FromQuery] GetCommentsRequestDto request)
     {
-        var commentsQuery = _context.Comments.AsQueryable();
+        var criteria = _mapper.Map<CommentsQueryCriteria>(request);
 
-        if (request.IncludeDeleted)
-        {
-            commentsQuery = commentsQuery.IgnoreQueryFilters();
-        }
+        var comments = await _commentService.GetComments(criteria);
 
-        var comments = await commentsQuery.ToListAsync();
-
-        return Ok(comments.Select(c => c.ToDto()));
+        return Ok(_mapper.Map<IEnumerable<CommentResponseDto>>(comments));
     }
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<CommentResponseDto>> GetCommentById(int id)
     {
-        var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
+        var comment = await _commentService.GetCommentById(id);
 
-        return Ok(comment!.ToDto());
+        return Ok(_mapper.Map<CommentResponseDto>(comment!));
     }
 
     [HttpPut("{id:int}")]
     public async Task<ActionResult<CommentResponseDto>> UpdateCommentById(int id, [FromBody] UpdateCommentRequestDto request)
     {
-        var comment = await _context.Comments.FirstAsync(c => c.Id == id);
+        var commentUpdate = _mapper.Map<UpdateComment>(request);
 
-        comment.Content = request.Content;
+        var comment = await _commentService.UpdateCommentById(id, commentUpdate);
 
-        await _context.SaveChangesAsync();
-
-        return Ok(comment.ToDto());
+        return Ok(_mapper.Map<CommentResponseDto>(comment!));
     }
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeleteCommentById(int id)
     {
-        var comment = await _context.Comments.FirstAsync(c => c.Id == id);
-
-        await _softDeleteService.SetCascadeSoftDeleteAsync(comment);
+        await _commentService.DeleteCommentById(id);
 
         return NoContent();
     }

@@ -2,6 +2,7 @@ using System.Reflection;
 using Asp.Versioning;
 using ExampleBlog.Api.Infrastructure.ModelBinders;
 using ExampleBlog.Api.Infrastructure.Swagger;
+using ExampleBlog.Api.Mapping;
 using ExampleBlog.Core.Entities;
 using ExampleBlog.Services;
 using Newtonsoft.Json.Converters;
@@ -44,6 +45,8 @@ builder.Services.AddApplicationServices(builder.Configuration);
 
 builder.Services.AddIdentityApiEndpoints<User>()
     .AddIdentityServices();
+
+builder.Services.AddAutoMapper(typeof(DefaultProfile).Assembly);
 
 builder.Services.AddAuthorization();
 
