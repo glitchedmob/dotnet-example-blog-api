@@ -26,7 +26,7 @@ public class PostCommentsController : ControllerBase
     {
         var newComment = _mapper.Map<CreateComment>(request);
 
-        var comment = await _commentService.CreateCommentForPost(postId, newComment);
+        var comment = await _commentService.Create(postId, newComment);
 
 
         return CreatedAtAction(nameof(CommentsController.GetCommentById), "Comments", new { id = comment.Id },
@@ -36,7 +36,7 @@ public class PostCommentsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CommentResponseDto>>> GetComentsForPost(int postId)
     {
-        var comments = await _commentService.GetCommentsForPost(postId);
+        var comments = await _commentService.GetManyForPost(postId);
 
         return Ok(_mapper.Map<IEnumerable<CommentResponseDto>>(comments));
     }

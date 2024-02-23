@@ -19,7 +19,7 @@ public class PostService : IPostService
         _softDeleteService = softDeleteService;
     }
 
-    public async Task<IEnumerable<Post>> GetPosts(PostsQueryCriteria criteria)
+    public async Task<IEnumerable<Post>> GetMany(PostsQueryCriteria criteria)
     {
         var postsQuery = _context.Posts.AsQueryable();
 
@@ -31,17 +31,36 @@ public class PostService : IPostService
         return await postsQuery.ToListAsync();
     }
 
-    public async Task<Post?> GetPostById(int postId)
+    public async Task<int> GetCount(PostsQueryCriteria criteria)
+    {
+        return await _context.Posts.CountAsync();
+    }
+
+    public async Task<PaginatedResult<Post>> GetManyAndCount(PostsQueryCriteria criteria)
+    {
+        var items = await GetMany(criteria);
+        var count = await GetCount(criteria);
+
+        return new PaginatedResult<Post>
+        {
+            Items = items,
+            Count = count,
+            Limit = 0,
+            Offset = 0,
+        };
+    }
+
+    public async Task<Post?> GetById(int postId)
     {
         return await _context.Posts.FirstAsync(p => p.Id == postId);
     }
 
-    public async Task<Post?> GetPostBySlug(string slug)
+    public async Task<Post?> GetBySlug(string slug)
     {
         return await _context.Posts.FirstAsync(p => p.Slug == slug);
     }
 
-    public async Task<Post> CreatePost(CreatePost newPost)
+    public async Task<Post> Create(CreatePost newPost)
     {
         var user = await _context.Users.FirstAsync();
 
@@ -60,7 +79,7 @@ public class PostService : IPostService
         return post;
     }
 
-    public async Task DeletePostById(int postId)
+    public async Task Delete(int postId)
     {
         var post = await _context.Posts.FirstAsync(p => p.Id == postId);
 

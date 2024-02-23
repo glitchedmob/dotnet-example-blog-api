@@ -26,7 +26,7 @@ public class CommentsController : ControllerBase
     {
         var criteria = _mapper.Map<CommentsQueryCriteria>(request);
 
-        var comments = await _commentService.GetComments(criteria);
+        var comments = await _commentService.GetMany(criteria);
 
         return Ok(_mapper.Map<IEnumerable<CommentResponseDto>>(comments));
     }
@@ -34,7 +34,7 @@ public class CommentsController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<CommentResponseDto>> GetCommentById(int id)
     {
-        var comment = await _commentService.GetCommentById(id);
+        var comment = await _commentService.GetByid(id);
 
         return Ok(_mapper.Map<CommentResponseDto>(comment!));
     }
@@ -44,7 +44,7 @@ public class CommentsController : ControllerBase
     {
         var commentUpdate = _mapper.Map<UpdateComment>(request);
 
-        var comment = await _commentService.UpdateCommentById(id, commentUpdate);
+        var comment = await _commentService.Update(id, commentUpdate);
 
         return Ok(_mapper.Map<CommentResponseDto>(comment!));
     }
@@ -52,7 +52,7 @@ public class CommentsController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeleteCommentById(int id)
     {
-        await _commentService.DeleteCommentById(id);
+        await _commentService.Delete(id);
 
         return NoContent();
     }

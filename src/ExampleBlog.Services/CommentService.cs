@@ -19,7 +19,7 @@ public class CommentService : ICommentService
         _softDeleteService = softDeleteService;
     }
 
-    public async Task<IEnumerable<Comment>> GetComments(CommentsQueryCriteria criteria)
+    public async Task<IEnumerable<Comment>> GetMany(CommentsQueryCriteria criteria)
     {
         var commentsQuery = _context.Comments.AsQueryable();
 
@@ -31,17 +31,36 @@ public class CommentService : ICommentService
         return await commentsQuery.ToListAsync();
     }
 
-    public async Task<IEnumerable<Comment>> GetCommentsForPost(int postId)
+    public async Task<int> GetCount(CommentsQueryCriteria criteria)
+    {
+        return await _context.Comments.CountAsync();
+    }
+
+    public async Task<PaginatedResult<Comment>> GetManyAndCount(CommentsQueryCriteria criteria)
+    {
+        var items = await GetMany(criteria);
+        var count = await GetCount(criteria);
+
+        return new PaginatedResult<Comment>
+        {
+            Items = items,
+            Count = count,
+            Limit = 0,
+            Offset = 0,
+        };
+    }
+
+    public async Task<IEnumerable<Comment>> GetManyForPost(int postId)
     {
         return await _context.Comments.Where(c => c.PostId == postId).ToListAsync();
     }
 
-    public async Task<Comment?> GetCommentById(int commentId)
+    public async Task<Comment?> GetByid(int commentId)
     {
         return await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
     }
 
-    public async Task<Comment> CreateCommentForPost(int postId, CreateComment newComment)
+    public async Task<Comment> Create(int postId, CreateComment newComment)
     {
         var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
         var user = await _context.Users.FirstOrDefaultAsync();
@@ -60,7 +79,7 @@ public class CommentService : ICommentService
         return comment;
     }
 
-    public async Task<Comment?> UpdateCommentById(int commentId, UpdateComment commentUpdate)
+    public async Task<Comment?> Update(int commentId, UpdateComment commentUpdate)
     {
         var comment = await _context.Comments.FirstAsync(c => c.Id == commentId);
 
@@ -71,7 +90,7 @@ public class CommentService : ICommentService
         return comment;
     }
 
-    public async Task DeleteCommentById(int commentId)
+    public async Task Delete(int commentId)
     {
         var comment = await _context.Comments.FirstAsync(c => c.Id == commentId);
 

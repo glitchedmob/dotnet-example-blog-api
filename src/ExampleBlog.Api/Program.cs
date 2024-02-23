@@ -1,5 +1,6 @@
 using System.Reflection;
 using Asp.Versioning;
+using AutoMapper;
 using ExampleBlog.Api.Infrastructure.ModelBinders;
 using ExampleBlog.Api.Infrastructure.Swagger;
 using ExampleBlog.Api.Mapping;

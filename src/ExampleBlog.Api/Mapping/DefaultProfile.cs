@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExampleBlog.Api.Dtos.Common;
+using ExampleBlog.Core.Domain;
 using ExampleBlog.Core.Domain.Common;
 
 namespace ExampleBlog.Api.Mapping;
@@ -10,5 +11,6 @@ public class DefaultProfile : Profile
     {
         CreateMap(typeof(FilterOption<>), typeof(FieldFilterCriteria<>));
         CreateMap<DefaultGetQueryOptions, DefaultQueryCriteria>();
+        CreateMap(typeof(PaginatedResult<>), typeof(PaginatedResponseDto<>));
     }
 }

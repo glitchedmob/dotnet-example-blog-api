@@ -27,7 +27,7 @@ public class PostsController : ControllerBase
     {
         var criteria = _mapper.Map<PostsQueryCriteria>(request);
 
-        var posts = await _postService.GetPosts(criteria);
+        var posts = await _postService.GetMany(criteria);
 
         return Ok(_mapper.Map<IEnumerable<PostResponseDto>>(posts));
     }
@@ -35,7 +35,7 @@ public class PostsController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<PostResponseDto>> GetPostById(int id)
     {
-        var post = await _postService.GetPostById(id);
+        var post = await _postService.GetById(id);
 
         return Ok(_mapper.Map<PostResponseDto>(post));
     }
@@ -43,7 +43,7 @@ public class PostsController : ControllerBase
     [HttpGet("slug/{slug}")]
     public async Task<ActionResult<PostResponseDto>> GetPostBySlug(string slug)
     {
-        var post = await _postService.GetPostBySlug(slug);
+        var post = await _postService.GetBySlug(slug);
 
         return Ok(_mapper.Map<PostResponseDto>(post));
     }
@@ -53,7 +53,7 @@ public class PostsController : ControllerBase
     {
         var newPost = _mapper.Map<CreatePost>(request);
 
-        var post = await _postService.CreatePost(newPost);
+        var post = await _postService.Create(newPost);
 
         return CreatedAtAction(nameof(GetPostById), new { id = post.Id }, _mapper.Map<PostResponseDto>(post));
     }
@@ -61,7 +61,7 @@ public class PostsController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeletePost(int id)
     {
-        await _postService.DeletePostById(id);
+        await _postService.Delete(id);
 
         return NoContent();
     }
