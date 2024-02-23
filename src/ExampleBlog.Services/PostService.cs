@@ -8,7 +8,7 @@ using SoftDeleteServices.Concrete;
 
 namespace ExampleBlog.Services;
 
-public class PostService : IPostService
+internal class PostService : IPostService
 {
     private readonly AppDbContext _context;
     private readonly CascadeSoftDelServiceAsync<ISoftDelete> _softDeleteService;
