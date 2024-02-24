@@ -15,11 +15,28 @@ internal class PostRepsotiroy : BaseCrudRepository<Post>, IPostRepository
 
     public IQueryable<Post> QueryFromCriteria(PostsQueryCriteria criteria)
     {
-        throw new NotImplementedException();
+        var query = QueryFromDefaultCriteria<Post>(criteria);
+
+        if (criteria.Ids.Any())
+        {
+            query = query.Where(p => criteria.Ids.Contains(p.Id));
+        }
+
+        if (criteria.Slugs.Any())
+        {
+            query = query.Where(p => criteria.Slugs.Contains(p.Slug));
+        }
+
+        if (criteria.AuthorIds.Any())
+        {
+            query = query.Where(p => criteria.AuthorIds.Contains(p.AuthorId));
+        }
+
+        return query;
     }
 
     protected override IQueryable<Post> ApplySearchCriteria(IQueryable<Post> query, string searchText)
     {
-        throw new NotImplementedException();
+        return query.Where(p => p.Title.Contains(searchText) || p.Content.Contains(searchText));
     }
 }

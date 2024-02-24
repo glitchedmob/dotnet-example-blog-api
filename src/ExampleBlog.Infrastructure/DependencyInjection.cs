@@ -22,6 +22,7 @@ public static class DependencyInjection
             Assembly.GetAssembly(typeof(ConfigCascadeDelete)));
 
         services.AddScoped<ICommentRepository, CommentRepository>();
+        services.AddScoped<IPostRepository, PostRepsotiroy>();
 
         return services;
     }
