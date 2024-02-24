@@ -1,5 +1,6 @@
 using AutoMapper;
 using ExampleBlog.Api.Dtos;
+using ExampleBlog.Api.Dtos.Common;
 using ExampleBlog.Api.Routing;
 using ExampleBlog.Api.Mapping;
 using ExampleBlog.Core.Domain;
@@ -23,13 +24,13 @@ public class PostsController : ControllerBase
     }
 
     [HttpGet(Name = nameof(GetPosts))]
-    public async Task<ActionResult<IEnumerable<PostResponseDto>>> GetPosts([FromQuery] GetPostsRequestDto request)
+    public async Task<ActionResult<PaginatedResponseDto<PostResponseDto>>> GetPosts([FromQuery] GetPostsRequestDto request)
     {
         var criteria = _mapper.Map<PostsQueryCriteria>(request);
 
-        var posts = await _postService.GetMany(criteria);
+        var result = await _postService.GetManyAndCount(criteria);
 
-        return Ok(_mapper.Map<IEnumerable<PostResponseDto>>(posts));
+        return Ok(_mapper.Map<PaginatedResponseDto<PostResponseDto>>(result));
     }
 
     [HttpGet("{id:int}")]

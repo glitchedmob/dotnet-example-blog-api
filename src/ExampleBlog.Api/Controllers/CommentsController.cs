@@ -1,5 +1,6 @@
 using AutoMapper;
 using ExampleBlog.Api.Dtos;
+using ExampleBlog.Api.Dtos.Common;
 using ExampleBlog.Api.Routing;
 using ExampleBlog.Core.Domain;
 using ExampleBlog.Core.Services;
@@ -21,14 +22,14 @@ public class CommentsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CommentResponseDto>>> GetComments(
+    public async Task<ActionResult<PaginatedResponseDto<CommentResponseDto>>> GetComments(
         [FromQuery] GetCommentsRequestDto request)
     {
         var criteria = _mapper.Map<CommentsQueryCriteria>(request);
 
-        var comments = await _commentService.GetMany(criteria);
+        var result = await _commentService.GetManyAndCount(criteria);
 
-        return Ok(_mapper.Map<IEnumerable<CommentResponseDto>>(comments));
+        return Ok(_mapper.Map<PaginatedResponseDto<CommentResponseDto>>(result));
     }
 
     [HttpGet("{id:int}")]

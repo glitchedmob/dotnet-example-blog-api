@@ -36,8 +36,8 @@ internal class CommentService : ICommentService
         {
             Items = items,
             Count = count,
-            Limit = 0,
-            Offset = 0,
+            Limit = criteria.Limit,
+            Offset = criteria.Offset,
         };
     }
 
