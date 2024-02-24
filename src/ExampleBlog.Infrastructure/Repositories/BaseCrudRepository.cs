@@ -66,10 +66,18 @@ internal abstract class BaseCrudRepository<TEntityType> : ICrudRepository<TEntit
             query = (IQueryable<TTimeStampedEntityType>)ApplySearchCriteria(query, criteria.SearchText);
         }
 
+        if (criteria.IncludeDeleted)
+        {
+            query = _softDeleteService.GetSoftDeletedEntries<TTimeStampedEntityType>();
+        }
+
         query = query.Skip(criteria.Offset).Take(criteria.Limit);
 
         return query;
     }
 
-    protected abstract IQueryable<TEntityType> ApplySearchCriteria(IQueryable<TEntityType> query, string searchText);
+    protected virtual IQueryable<TEntityType> ApplySearchCriteria(IQueryable<TEntityType> query, string searchText)
+    {
+        return query;
+    }
 }

@@ -12,5 +12,6 @@ public class PostProfile : Profile
         CreateMap<CreatePostRequestDto, CreatePost>();
         CreateMap<GetPostsRequestDto, PostsQueryCriteria>();
         CreateMap<Post, PostResponseDto>();
+        CreateMap<User, PostResponseDto.AuthorResponseDto>();
     }
 }

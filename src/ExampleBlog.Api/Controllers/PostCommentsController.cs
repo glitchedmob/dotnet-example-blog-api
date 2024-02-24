@@ -21,7 +21,7 @@ public class PostCommentsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<CommentResponseDto>> CreateCommentForPost(int postId,
+    public async Task<ActionResult<CommentListItemResponseDto>> CreateCommentForPost(int postId,
         [FromBody] CreateCommentRequestDto request)
     {
         var newComment = _mapper.Map<CreateComment>(request);
@@ -30,14 +30,14 @@ public class PostCommentsController : ControllerBase
 
 
         return CreatedAtAction(nameof(CommentsController.GetCommentById), "Comments", new { id = comment.Id },
-            _mapper.Map<CommentResponseDto>(comment));
+            _mapper.Map<CommentListItemResponseDto>(comment));
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CommentResponseDto>>> GetComentsForPost(int postId)
+    public async Task<ActionResult<IEnumerable<CommentListItemResponseDto>>> GetComentsForPost(int postId)
     {
         var comments = await _commentService.GetManyForPost(postId);
 
-        return Ok(_mapper.Map<IEnumerable<CommentResponseDto>>(comments));
+        return Ok(_mapper.Map<IEnumerable<CommentListItemResponseDto>>(comments));
     }
 }

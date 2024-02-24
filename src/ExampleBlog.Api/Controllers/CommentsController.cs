@@ -22,14 +22,14 @@ public class CommentsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<PaginatedResponseDto<CommentResponseDto>>> GetComments(
+    public async Task<ActionResult<PaginatedResponseDto<CommentListItemResponseDto>>> GetComments(
         [FromQuery] GetCommentsRequestDto request)
     {
         var criteria = _mapper.Map<CommentsQueryCriteria>(request);
 
         var result = await _commentService.GetManyAndCount(criteria);
 
-        return Ok(_mapper.Map<PaginatedResponseDto<CommentResponseDto>>(result));
+        return Ok(_mapper.Map<PaginatedResponseDto<CommentListItemResponseDto>>(result));
     }
 
     [HttpGet("{id:int}")]
@@ -41,13 +41,13 @@ public class CommentsController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult<CommentResponseDto>> UpdateCommentById(int id, [FromBody] UpdateCommentRequestDto request)
+    public async Task<ActionResult<CommentListItemResponseDto>> UpdateCommentById(int id, [FromBody] UpdateCommentRequestDto request)
     {
         var commentUpdate = _mapper.Map<UpdateComment>(request);
 
         var comment = await _commentService.Update(id, commentUpdate);
 
-        return Ok(_mapper.Map<CommentResponseDto>(comment!));
+        return Ok(_mapper.Map<CommentListItemResponseDto>(comment!));
     }
 
     [HttpDelete("{id:int}")]

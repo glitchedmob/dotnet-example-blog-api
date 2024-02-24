@@ -1,4 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ExampleBlog.Api.Dtos.Common;
 
@@ -18,4 +21,14 @@ public class DefaultGetQueryOptions
     /// </summary>
     [FromQuery(Name = "sort")]
     public List<SortOption>? SortOptions { get; set; }
+    [FromQuery(Name = "pageSize")]
+    [Range(1, 200)]
+    public int PageSize { get; set; } = 10;
+    [FromQuery(Name = "currentPage")]
+    [Range(1, int.MaxValue)]
+    public int CurrentPage { get; set; } = 1;
+    [BindNever]
+    public int Limit => PageSize;
+    [BindNever]
+    public int Offset => (CurrentPage - 1) * PageSize;
 }

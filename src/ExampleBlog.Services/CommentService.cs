@@ -10,11 +10,13 @@ internal class CommentService : ICommentService
 {
     private readonly ICommentRepository _commentRepository;
     private readonly IPostRepository _postRepository;
+    private readonly IUserRepository _userRepository;
 
-    public CommentService(ICommentRepository commentRepository, IPostRepository postRepository)
+    public CommentService(ICommentRepository commentRepository, IPostRepository postRepository, IUserRepository userRepository)
     {
         _commentRepository = commentRepository;
         _postRepository = postRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<IEnumerable<Comment>> GetMany(CommentsQueryCriteria criteria)
@@ -51,19 +53,21 @@ internal class CommentService : ICommentService
     public async Task<Comment?> GetByid(int commentId)
     {
         return await _commentRepository.NewQuery()
+            .Include(c => c.Post)
+            .Include(c => c.Author)
             .FirstOrDefaultAsync(c => c.Id == commentId);
     }
 
     public async Task<Comment> Create(int postId, CreateComment newComment)
     {
         var post = await _postRepository.NewQuery().FirstOrDefaultAsync(p => p.Id == postId);
-        // var user = await _context.Users.FirstOrDefaultAsync();
+        var user = await _userRepository.NewQuery().FirstOrDefaultAsync();
 
         var comment = new Comment
         {
             Content = newComment.Content,
             PostId = post!.Id,
-            AuthorId = 1,
+            AuthorId = user.Id,
         };
 
         _commentRepository.Add(comment);

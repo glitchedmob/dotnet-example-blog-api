@@ -11,6 +11,9 @@ public class CommentProfile : Profile
     {
         CreateMap<CreateCommentRequestDto, CreateComment>();
         CreateMap<GetCommentsRequestDto, CommentsQueryCriteria>();
+        CreateMap<Comment, CommentListItemResponseDto>();
         CreateMap<Comment, CommentResponseDto>();
+        CreateMap<User, CommentResponseDto.AuthorResponseDto>();
+        CreateMap<Post, CommentResponseDto.PostResponseDto>();
     }
 }

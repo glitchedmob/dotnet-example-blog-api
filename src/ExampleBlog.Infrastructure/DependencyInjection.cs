@@ -21,6 +21,7 @@ public static class DependencyInjection
         services.RegisterSoftDelServicesAndYourConfigurations(
             Assembly.GetAssembly(typeof(ConfigCascadeDelete)));
 
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
         services.AddScoped<IPostRepository, PostRepsotiroy>();
 

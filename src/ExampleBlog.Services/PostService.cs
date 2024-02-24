@@ -1,39 +1,32 @@
 ﻿using ExampleBlog.Core.Domain;
 using ExampleBlog.Core.Entities;
-using ExampleBlog.Core.Entities.Behaviors;
 using ExampleBlog.Core.Services;
-using ExampleBlog.Infrastructure;
+using ExampleBlog.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using SoftDeleteServices.Concrete;
 
 namespace ExampleBlog.Services;
 
 internal class PostService : IPostService
 {
-    private readonly AppDbContext _context;
-    private readonly CascadeSoftDelServiceAsync<ISoftDelete> _softDeleteService;
+    private readonly IPostRepository _postRepository;
+    private readonly IUserRepository _userRepository;
 
-    public PostService(AppDbContext context, CascadeSoftDelServiceAsync<ISoftDelete> softDeleteService)
+    public PostService(IPostRepository postRepository, IUserRepository userRepository)
     {
-        _context = context;
-        _softDeleteService = softDeleteService;
+        _postRepository = postRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<IEnumerable<Post>> GetMany(PostsQueryCriteria criteria)
     {
-        var postsQuery = _context.Posts.AsQueryable();
-
-        if (criteria.IncludeDeleted)
-        {
-            postsQuery = _softDeleteService.GetSoftDeletedEntries<Post>();
-        }
-
-        return await postsQuery.ToListAsync();
+        return await _postRepository.QueryFromCriteria(criteria)
+            .Include(p => p.Author)
+            .ToListAsync();
     }
 
     public async Task<int> GetCount(PostsQueryCriteria criteria)
     {
-        return await _context.Posts.CountAsync();
+        return await _postRepository.QueryFromCriteria(criteria).CountAsync();
     }
 
     public async Task<PaginatedResult<Post>> GetManyAndCount(PostsQueryCriteria criteria)
@@ -45,44 +38,46 @@ internal class PostService : IPostService
         {
             Items = items,
             Count = count,
-            Limit = 0,
-            Offset = 0,
+            Limit = criteria.Limit,
+            Offset = criteria.Offset,
         };
     }
 
     public async Task<Post?> GetById(int postId)
     {
-        return await _context.Posts.FirstAsync(p => p.Id == postId);
+        return await  _postRepository.NewQuery()
+            .Include(p => p.Author)
+            .FirstOrDefaultAsync(p => p.Id == postId);
     }
 
     public async Task<Post?> GetBySlug(string slug)
     {
-        return await _context.Posts.FirstAsync(p => p.Slug == slug);
+        return await  _postRepository.NewQuery()
+            .Include(p => p.Author)
+            .FirstOrDefaultAsync(p => p.Slug == slug);
     }
 
     public async Task<Post> Create(CreatePost newPost)
     {
-        var user = await _context.Users.FirstAsync();
+        var user = await _userRepository.NewQuery().FirstOrDefaultAsync();
 
         var post = new Post
         {
             Title = newPost.Title,
             Content = newPost.Content,
             Slug = newPost.Slug ?? newPost.Title.ToLower().Replace(" ", "-"),
-            AuthorId = user!.Id,
+            AuthorId = user.Id,
         };
 
-        _context.Add(post);
-
-        await _context.SaveChangesAsync();
+        _postRepository.Add(post);
+        await _postRepository.SaveChanges();
 
         return post;
     }
 
     public async Task Delete(int postId)
     {
-        var post = await _context.Posts.FirstAsync(p => p.Id == postId);
-
-        await _softDeleteService.SetCascadeSoftDeleteAsync(post);
+        var post = await GetById(postId);
+        await _postRepository.SoftDelete(post);
     }
 }
