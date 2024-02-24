@@ -8,7 +8,8 @@ namespace ExampleBlog.Infrastructure.Repositories;
 
 internal class CommentRepository : BaseCrudRepository<Comment>, ICommentRepository
 {
-    public CommentRepository(AppDbContext context, CascadeSoftDelServiceAsync<ISoftDelete> softDeleteService) : base(context, softDeleteService)
+    public CommentRepository(AppDbContext context, CascadeSoftDelServiceAsync<ISoftDelete> softDeleteService) : base(
+        context, softDeleteService)
     {
     }
 

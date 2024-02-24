@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using ExampleBlog.Core.Entities;
+using ExampleBlog.Infrastructure.Repositories;
+using ExampleBlog.Infrastructure.Repositories.Interfaces;
 using ExampleBlog.Infrastructure.SoftDelete;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +20,8 @@ public static class DependencyInjection
 
         services.RegisterSoftDelServicesAndYourConfigurations(
             Assembly.GetAssembly(typeof(ConfigCascadeDelete)));
+
+        services.AddScoped<ICommentRepository, CommentRepository>();
 
         return services;
     }

@@ -7,7 +7,6 @@ public interface ICrudRepository<TEntityType> where TEntityType : class, ISoftDe
     IQueryable<TEntityType> NewQuery();
     void Add(TEntityType entity, CancellationToken ct = default);
     Task<int> SaveChanges(CancellationToken ct = default);
-    void HardDelete(TEntityType entity);
+    void ForceDelete(TEntityType entity);
     void Update(TEntityType entity);
-    Task SoftDelete(TEntityType entity, CancellationToken ct = default);
 }

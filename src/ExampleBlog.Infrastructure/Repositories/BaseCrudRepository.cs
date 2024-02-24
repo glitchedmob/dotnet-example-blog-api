@@ -37,7 +37,7 @@ internal abstract class BaseCrudRepository<TEntityType> : ICrudRepository<TEntit
         return await Context.SaveChangesAsync();
     }
 
-    public void HardDelete(TEntityType entity)
+    public void ForceDelete(TEntityType entity)
     {
         Context.Remove(entity);
     }
