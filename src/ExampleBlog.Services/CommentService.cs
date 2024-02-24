@@ -1,39 +1,30 @@
 ﻿using ExampleBlog.Core.Domain;
 using ExampleBlog.Core.Entities;
-using ExampleBlog.Core.Entities.Behaviors;
 using ExampleBlog.Core.Services;
-using ExampleBlog.Infrastructure;
+using ExampleBlog.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using SoftDeleteServices.Concrete;
 
 namespace ExampleBlog.Services;
 
 internal class CommentService : ICommentService
 {
-    private readonly AppDbContext _context;
-    private readonly CascadeSoftDelServiceAsync<ISoftDelete> _softDeleteService;
+    private readonly ICommentRepository _commentRepository;
+    private readonly IPostRepository _postRepository;
 
-    public CommentService(AppDbContext context, CascadeSoftDelServiceAsync<ISoftDelete> softDeleteService)
+    public CommentService(ICommentRepository commentRepository, IPostRepository postRepository)
     {
-        _context = context;
-        _softDeleteService = softDeleteService;
+        _commentRepository = commentRepository;
+        _postRepository = postRepository;
     }
 
     public async Task<IEnumerable<Comment>> GetMany(CommentsQueryCriteria criteria)
     {
-        var commentsQuery = _context.Comments.AsQueryable();
-
-        if (criteria.IncludeDeleted)
-        {
-            commentsQuery = commentsQuery.IgnoreQueryFilters();
-        }
-
-        return await commentsQuery.ToListAsync();
+        return await _commentRepository.QueryFromCriteria(criteria).ToListAsync();
     }
 
     public async Task<int> GetCount(CommentsQueryCriteria criteria)
     {
-        return await _context.Comments.CountAsync();
+        return await _commentRepository.QueryFromCriteria(criteria).CountAsync();
     }
 
     public async Task<PaginatedResult<Comment>> GetManyAndCount(CommentsQueryCriteria criteria)
@@ -52,48 +43,51 @@ internal class CommentService : ICommentService
 
     public async Task<IEnumerable<Comment>> GetManyForPost(int postId)
     {
-        return await _context.Comments.Where(c => c.PostId == postId).ToListAsync();
+        return await _commentRepository.NewQuery()
+            .Where(c => c.PostId == postId)
+            .ToListAsync();
     }
 
     public async Task<Comment?> GetByid(int commentId)
     {
-        return await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
+        return await _commentRepository.NewQuery()
+            .FirstOrDefaultAsync(c => c.Id == commentId);
     }
 
     public async Task<Comment> Create(int postId, CreateComment newComment)
     {
-        var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
-        var user = await _context.Users.FirstOrDefaultAsync();
+        var post = await _postRepository.NewQuery().FirstOrDefaultAsync(p => p.Id == postId);
+        // var user = await _context.Users.FirstOrDefaultAsync();
 
         var comment = new Comment
         {
             Content = newComment.Content,
             PostId = post!.Id,
-            AuthorId = user!.Id,
+            AuthorId = 1,
         };
 
-        _context.Add(comment);
-
-        await _context.SaveChangesAsync();
+        _commentRepository.Add(comment);
+        await _commentRepository.SaveChanges();
 
         return comment;
     }
 
     public async Task<Comment?> Update(int commentId, UpdateComment commentUpdate)
     {
-        var comment = await _context.Comments.FirstAsync(c => c.Id == commentId);
+        var comment = await GetByid(commentId);
 
         comment.Content = commentUpdate.Content;
 
-        await _context.SaveChangesAsync();
+        _commentRepository.Update(comment);
+
+        await _commentRepository.SaveChanges();
 
         return comment;
     }
 
     public async Task Delete(int commentId)
     {
-        var comment = await _context.Comments.FirstAsync(c => c.Id == commentId);
-
-        await _softDeleteService.SetCascadeSoftDeleteAsync(comment);
+        var comment = await GetByid(commentId);
+        await _commentRepository.SoftDelete(comment);
     }
 }

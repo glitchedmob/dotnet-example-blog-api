@@ -14,7 +14,7 @@ public class FilterOption<TOptionType>
     }
 
     [ModelBinder(BinderType = typeof(NestedValueWithoutSuffixModelBinder))]
-    public List<TOptionType> Values { get; set; } = new();
+    public List<TOptionType> Values { get; set; } = [];
     [FromQuery(Name = "gt")]
     public TOptionType? GreaterThan { get; set; }
     [FromQuery(Name = "lt")]

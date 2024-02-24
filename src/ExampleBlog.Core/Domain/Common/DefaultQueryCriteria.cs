@@ -7,4 +7,6 @@ public class DefaultQueryCriteria
     public string? SearchText { get; set; }
     public bool IncludeDeleted { get; set; } = false;
     public List<SortCriteria>? SortOptions { get; set; }
+    public int Limit { get; set; }
+    public int Offset { get; set; }
 }
