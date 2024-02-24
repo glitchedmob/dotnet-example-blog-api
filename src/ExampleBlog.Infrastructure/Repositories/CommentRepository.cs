@@ -1,6 +1,7 @@
 ﻿using ExampleBlog.Core.Domain;
 using ExampleBlog.Core.Entities;
 using ExampleBlog.Core.Entities.Behaviors;
+using ExampleBlog.Infrastructure.Extensions;
 using ExampleBlog.Infrastructure.Repositories.Interfaces;
 using SoftDeleteServices.Concrete;
 
@@ -17,20 +18,9 @@ internal class CommentRepository : BaseCrudRepository<Comment>, ICommentReposito
     {
         var query = QueryFromDefaultCriteria<Comment>(criteria);
 
-        if (criteria.Ids.Any())
-        {
-            query = query.Where(c => criteria.Ids.Contains(c.Id));
-        }
-
-        if (criteria.AuthorIds.Any())
-        {
-            query = query.Where(c => criteria.AuthorIds.Contains(c.AuthorId));
-        }
-
-        if (criteria.PostIds.Any())
-        {
-            query = query.Where(c => criteria.PostIds.Contains(c.PostId));
-        }
+        query.WhereIf(criteria.Ids.Any(), e => criteria.Ids.Contains(e.Id));
+        query.WhereIf(criteria.PostIds.Any(), e => criteria.PostIds.Contains(e.PostId));
+        query.WhereIf(criteria.AuthorIds.Any(), e => criteria.AuthorIds.Contains(e.AuthorId));
 
         return query;
     }

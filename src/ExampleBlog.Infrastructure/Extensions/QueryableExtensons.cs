@@ -63,4 +63,10 @@ internal static class QueryableExtensons
         var lambda = Expression.Lambda<Func<TEntityType, bool>>(comparisonExpression, propertySelector.Parameters);
         return query.Where(lambda);
     }
+
+    public static IQueryable<TEntityType> WhereIf<TEntityType>(this IQueryable<TEntityType> query, bool condition,
+        Expression<Func<TEntityType, bool>> predicate)
+    {
+        return !condition ? query : query.Where(predicate);
+    }
 }

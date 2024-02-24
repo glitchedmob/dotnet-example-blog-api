@@ -1,6 +1,7 @@
 ﻿using ExampleBlog.Core.Domain;
 using ExampleBlog.Core.Entities;
 using ExampleBlog.Core.Entities.Behaviors;
+using ExampleBlog.Infrastructure.Extensions;
 using ExampleBlog.Infrastructure.Repositories.Interfaces;
 using SoftDeleteServices.Concrete;
 
@@ -17,20 +18,9 @@ internal class PostRepsotiroy : BaseCrudRepository<Post>, IPostRepository
     {
         var query = QueryFromDefaultCriteria<Post>(criteria);
 
-        if (criteria.Ids.Any())
-        {
-            query = query.Where(p => criteria.Ids.Contains(p.Id));
-        }
-
-        if (criteria.Slugs.Any())
-        {
-            query = query.Where(p => criteria.Slugs.Contains(p.Slug));
-        }
-
-        if (criteria.AuthorIds.Any())
-        {
-            query = query.Where(p => criteria.AuthorIds.Contains(p.AuthorId));
-        }
+        query.WhereIf(criteria.Ids.Any(), e => criteria.Ids.Contains(e.Id));
+        query.WhereIf(criteria.Slugs.Any(), e => criteria.Slugs.Contains(e.Slug));
+        query.WhereIf(criteria.AuthorIds.Any(), e => criteria.AuthorIds.Contains(e.AuthorId));
 
         return query;
     }
