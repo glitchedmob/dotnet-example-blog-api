@@ -8,9 +8,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\ExampleBlog.Core\ExampleBlog.Core.csproj"/>
-        <ProjectReference Include="..\ExampleBlog.Infrastructure\ExampleBlog.Infrastructure.csproj">
-            <PrivateAssets>All</PrivateAssets>
-        </ProjectReference>
+        <ProjectReference Include="..\ExampleBlog.Infrastructure\ExampleBlog.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

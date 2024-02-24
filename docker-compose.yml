@@ -5,7 +5,7 @@ services:
         image: exampleblogapi
         build:
             context: .
-            dockerfile: ExampleBlogApi/Dockerfile
+            dockerfile: src/ExampleBlog.Api/Dockerfile
         environment:
             - ASPNETCORE_ENVIRONMENT=Production
             - ASPNETCORE_URLS=https://+:${APP_HTTPS_PORT:-443};http://+:${APP_HTTP_PORT:-80}

@@ -7,7 +7,7 @@ namespace ExampleBlog.Api.Mapping;
 
 public class PostProfile : Profile
 {
-    protected PostProfile()
+    public PostProfile()
     {
         CreateMap<CreatePostRequestDto, CreatePost>();
         CreateMap<GetPostsRequestDto, PostsQueryCriteria>();

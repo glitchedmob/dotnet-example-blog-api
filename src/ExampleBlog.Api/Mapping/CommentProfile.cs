@@ -7,7 +7,7 @@ namespace ExampleBlog.Api.Mapping;
 
 public class CommentProfile : Profile
 {
-    protected CommentProfile()
+    public CommentProfile()
     {
         CreateMap<CreateCommentRequestDto, CreateComment>();
         CreateMap<GetCommentsRequestDto, CommentsQueryCriteria>();
