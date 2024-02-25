@@ -53,27 +53,40 @@ internal abstract class BaseCrudRepository<TEntityType> : ICrudRepository<TEntit
     }
 
     protected IQueryable<TTimeStampedEntityType>
-        QueryFromDefaultCriteria<TTimeStampedEntityType>(DefaultQueryCriteria criteria)
+        QueryFromDefaultCriteria<TTimeStampedEntityType>(
+            DefaultQueryCriteria criteria)
         where TTimeStampedEntityType : class, TEntityType, ITimeStamped
     {
         var query = Context.Set<TTimeStampedEntityType>().AsQueryable();
-
-        query = query.ApplyFieldCriteria(e => e.CreatedAt, criteria.CreatedAt);
-        query = query.ApplyFieldCriteria(e => e.UpdatedAt, criteria.UpdatedAt);
-
-        if (criteria.SearchText is not null)
-        {
-            query = (IQueryable<TTimeStampedEntityType>)ApplySearchCriteria(query, criteria.SearchText);
-        }
 
         if (criteria.IncludeDeleted)
         {
             query = _softDeleteService.GetSoftDeletedEntries<TTimeStampedEntityType>();
         }
 
+        query = query.ApplyFieldFilterCriteria(e => e.CreatedAt, criteria.CreatedAt);
+        query = query.ApplyFieldFilterCriteria(e => e.UpdatedAt, criteria.UpdatedAt);
+
+        if (criteria.SearchText is not null)
+        {
+            query = (IQueryable<TTimeStampedEntityType>)ApplySearchCriteria(query, criteria.SearchText);
+        }
+
         query = query.Skip(criteria.Offset).Take(criteria.Limit);
 
         return query;
+    }
+
+    protected IOrderedQueryable<TTimeStampedEntityType>
+        OrderedQueryFromDefaultCriteria<TTimeStampedEntityType, TQueryCriteriaType, TSortableFieldType>(
+            TQueryCriteriaType criteria)
+        where TTimeStampedEntityType : class, TEntityType, ITimeStamped
+        where TSortableFieldType : Enum
+        where TQueryCriteriaType : DefaultQueryCriteria<TSortableFieldType>
+    {
+        var query = QueryFromDefaultCriteria<TTimeStampedEntityType>(criteria);
+
+        return query.ApplyDynamicSorting(criteria.SortCriteria);
     }
 
     protected virtual IQueryable<TEntityType> ApplySearchCriteria(IQueryable<TEntityType> query, string searchText)

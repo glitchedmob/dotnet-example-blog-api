@@ -16,11 +16,12 @@ internal class PostRepsotiroy : BaseCrudRepository<Post>, IPostRepository
 
     public IQueryable<Post> QueryFromCriteria(PostsQueryCriteria criteria)
     {
-        var query = QueryFromDefaultCriteria<Post>(criteria);
+        var orderedQuery = OrderedQueryFromDefaultCriteria<Post, PostsQueryCriteria, PostSortableField>(criteria);
 
-        query.WhereIf(criteria.Ids.Any(), e => criteria.Ids.Contains(e.Id));
-        query.WhereIf(criteria.Slugs.Any(), e => criteria.Slugs.Contains(e.Slug));
-        query.WhereIf(criteria.AuthorIds.Any(), e => criteria.AuthorIds.Contains(e.AuthorId));
+        var query = orderedQuery
+            .WhereIf(criteria.Ids.Any(), e => criteria.Ids.Contains(e.Id))
+            .WhereIf(criteria.Slugs.Any(), e => criteria.Slugs.Contains(e.Slug))
+            .WhereIf(criteria.AuthorIds.Any(), e => criteria.AuthorIds.Contains(e.AuthorId));
 
         return query;
     }

@@ -6,7 +6,11 @@ public class DefaultQueryCriteria
     public FieldFilterCriteria<DateTime?>? UpdatedAt { get; set; }
     public string? SearchText { get; set; }
     public bool IncludeDeleted { get; set; } = false;
-    public List<SortCriteria>? SortOptions { get; set; }
     public int Limit { get; set; }
     public int Offset { get; set; }
+}
+
+public abstract class DefaultQueryCriteria<TSortableFieldType> : DefaultQueryCriteria where TSortableFieldType : Enum
+{
+    public abstract SortCriteria<TSortableFieldType> SortCriteria { get; set; }
 }

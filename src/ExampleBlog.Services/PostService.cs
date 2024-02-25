@@ -1,4 +1,5 @@
 ﻿using ExampleBlog.Core.Domain;
+using ExampleBlog.Core.Domain.Common;
 using ExampleBlog.Core.Entities;
 using ExampleBlog.Core.Services;
 using ExampleBlog.Infrastructure.Repositories.Interfaces;
@@ -19,6 +20,14 @@ internal class PostService : IPostService
 
     public async Task<IEnumerable<Post>> GetMany(PostsQueryCriteria criteria)
     {
+        var criteria2 = new PostsQueryCriteria
+        {
+            SortCriteria = new SortCriteria<PostSortableField>
+            {
+                { PostSortableField.Id, SortOrder.Ascending },
+            }
+        };
+
         return await _postRepository.QueryFromCriteria(criteria)
             .Include(p => p.Author)
             .ToListAsync();

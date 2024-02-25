@@ -1,11 +1,12 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 using ExampleBlog.Core.Domain.Common;
 
 namespace ExampleBlog.Infrastructure.Extensions;
 
 internal static class QueryableExtensons
 {
-    public static IQueryable<TEntityType> ApplyFieldCriteria<TEntityType, TDataType>(
+    public static IQueryable<TEntityType> ApplyFieldFilterCriteria<TEntityType, TDataType>(
         this IQueryable<TEntityType> query,
         Expression<Func<TEntityType, TDataType>> propertySelector,
         FieldFilterCriteria<TDataType?>? fieldCriteria)
@@ -69,4 +70,106 @@ internal static class QueryableExtensons
     {
         return !condition ? query : query.Where(predicate);
     }
+
+    public static IOrderedQueryable<TEntityType> OrderBy<TEntityType>(
+        this IQueryable<TEntityType> query,
+        string property)
+    {
+        return ApplyOrder(query, property, "OrderBy");
+    }
+
+    public static IOrderedQueryable<TEntityType> OrderByDescending<TEntityType>(
+        this IQueryable<TEntityType> query,
+        string property)
+    {
+        return ApplyOrder(query, property, "OrderByDescending");
+    }
+
+    public static IOrderedQueryable<TEntityType> ThenBy<TEntityType>(
+        this IOrderedQueryable<TEntityType> query,
+        string property)
+    {
+        return ApplyOrder(query, property, "ThenBy");
+    }
+
+    public static IOrderedQueryable<TEntityType> ThenByDescending<TEntityType>(
+        this IOrderedQueryable<TEntityType> query,
+        string property)
+    {
+        return ApplyOrder(query, property, "ThenByDescending");
+    }
+
+    public static IOrderedQueryable<TEntityType> ApplyDynamicSorting<TEntityType, TSortableFieldType>(
+        this IQueryable<TEntityType> source,
+        IEnumerable<(TSortableFieldType, SortOrder)> sortCriteria)
+        where TSortableFieldType : Enum
+    {
+        var properties = typeof(TEntityType).GetProperties();
+
+        var allCriteria = sortCriteria.ToList();
+        var (firstField, firstOrder) = allCriteria.First();
+        var firstProperty = GetPropertyNameFromEnum(properties, firstField);
+
+        var orderedQuery = firstOrder == SortOrder.Ascending
+            ? source.OrderBy(firstProperty)
+            : source.OrderByDescending(firstProperty);
+
+        var otherCriteria = allCriteria.Skip(1).ToList();
+
+        foreach (var (field, order) in otherCriteria)
+        {
+            var property = GetPropertyNameFromEnum(properties, field);
+
+            orderedQuery = order == SortOrder.Ascending
+                ? orderedQuery.ThenBy(property)
+                : orderedQuery.ThenByDescending(property);
+        }
+
+        return orderedQuery;
+    }
+
+
+    private static IOrderedQueryable<TEntityType> ApplyOrder<TEntityType>(
+        IQueryable<TEntityType> source,
+        string property,
+        string methodName)
+    {
+        var props = property.Split('.');
+        var type = typeof(TEntityType);
+        var arg = Expression.Parameter(type, "e");
+        Expression expr = arg;
+        foreach(var prop in props) {
+            // use reflection (not ComponentModel) to mirror LINQ
+            var pi = type.GetProperty(prop) ?? throw new InvalidOperationException();
+            expr = Expression.Property(expr, pi);
+            type = pi.PropertyType;
+        }
+        var delegateType = typeof(Func<,>).MakeGenericType(typeof(TEntityType), type);
+        var lambda = Expression.Lambda(delegateType, expr, arg);
+
+        var result = typeof(Queryable).GetMethods().Single(
+                method => method.Name == methodName
+                          && method.IsGenericMethodDefinition
+                          && method.GetGenericArguments().Length == 2
+                          && method.GetParameters().Length == 2)
+            .MakeGenericMethod(typeof(TEntityType), type)
+            .Invoke(null, [source, lambda]) ?? throw new InvalidOperationException();
+
+        return (IOrderedQueryable<TEntityType>)result;
+    }
+
+    private static string GetPropertyNameFromEnum<TSortableFieldType>(PropertyInfo[] properties,
+        TSortableFieldType field) where TSortableFieldType : Enum
+    {
+        foreach (var property in properties)
+        {
+            if (property.Name.Equals(field.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                return property.Name;
+            }
+        }
+
+        throw new ArgumentException($"No property found for enum value '{field}'");
+    }
 }
+
