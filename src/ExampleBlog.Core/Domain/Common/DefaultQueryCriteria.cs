@@ -10,12 +10,7 @@ public class DefaultQueryCriteria
     public int Offset { get; set; }
 }
 
-public abstract class DefaultQueryCriteria<TSortableFieldType> : DefaultQueryCriteria, ISortQueryCriteria<TSortableFieldType> where TSortableFieldType : Enum
+public abstract class DefaultQueryCriteria<TSortableFieldType> : DefaultQueryCriteria where TSortableFieldType : Enum
 {
     public abstract SortCriteria<TSortableFieldType> SortCriteria { get; set; }
-}
-
-public interface ISortQueryCriteria<TSortableFieldType> where TSortableFieldType : Enum
-{
-    SortCriteria<TSortableFieldType> SortCriteria { get; set; }
 }

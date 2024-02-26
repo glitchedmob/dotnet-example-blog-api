@@ -20,22 +20,14 @@ internal class PostService : IPostService
 
     public async Task<IEnumerable<Post>> GetMany(PostsQueryCriteria criteria)
     {
-        var criteria2 = new PostsQueryCriteria
-        {
-            SortCriteria = new SortCriteria<PostSortableField>
-            {
-                { PostSortableField.Id, SortOrder.Ascending },
-            }
-        };
-
-        return await _postRepository.QueryFromCriteria(criteria)
+        return await _postRepository.OrderedQueryFromCriteria(criteria)
             .Include(p => p.Author)
             .ToListAsync();
     }
 
     public async Task<int> GetCount(PostsQueryCriteria criteria)
     {
-        return await _postRepository.QueryFromCriteria(criteria).CountAsync();
+        return await _postRepository.CountForCriteria(criteria);
     }
 
     public async Task<PaginatedResult<Post>> GetManyAndCount(PostsQueryCriteria criteria)

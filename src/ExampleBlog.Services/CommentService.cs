@@ -21,12 +21,12 @@ internal class CommentService : ICommentService
 
     public async Task<IEnumerable<Comment>> GetMany(CommentsQueryCriteria criteria)
     {
-        return await _commentRepository.QueryFromCriteria(criteria).ToListAsync();
+        return await _commentRepository.OrderedQueryFromCriteria(criteria).ToListAsync();
     }
 
     public async Task<int> GetCount(CommentsQueryCriteria criteria)
     {
-        return await _commentRepository.QueryFromCriteria(criteria).CountAsync();
+        return await _commentRepository.CountForCriteria(criteria);
     }
 
     public async Task<PaginatedResult<Comment>> GetManyAndCount(CommentsQueryCriteria criteria)
