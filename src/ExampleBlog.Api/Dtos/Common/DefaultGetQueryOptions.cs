@@ -13,8 +13,8 @@ public class DefaultGetQueryOptions
     public FilterOption<DateTime?>? UpdatedAt { get; set; }
     [FromQuery(Name = "searchText")]
     public string? SearchText { get; set; }
-    [FromQuery(Name = "includeDeleted")]
-    public bool IncludeDeleted { get; set; } = false;
+    [FromQuery(Name = "onlyDeleted")]
+    public bool OnlyDeleted { get; set; } = false;
     /// <summary>
     /// Sort options in the format of 'field:order', where 'order' can be 'asc' or 'desc'.
     /// Multiple sort options can be provided.

@@ -22,8 +22,6 @@ internal abstract class BaseQueryCrudRepository<TEntityType, TQueryCriteriaType,
     {
         var query = QueryFromCriteriaWithoutPagination(criteria);
 
-        query = query.Skip(criteria.Offset).Take(criteria.Limit);
-
         return ApplyPagination(query, criteria);
     }
 
@@ -34,16 +32,18 @@ internal abstract class BaseQueryCrudRepository<TEntityType, TQueryCriteriaType,
 
     public IOrderedQueryable<TEntityType> OrderedQueryFromCriteria(TQueryCriteriaType criteria)
     {
-        var query = QueryFromCriteria(criteria);
+        var query = QueryFromCriteriaWithoutPagination(criteria);
 
-        return ApplySortCriteria(query, criteria);
+        var orderedQuery = ApplySortCriteria(query, criteria);
+
+        return ApplyPagination(orderedQuery, criteria);
     }
 
     protected IQueryable<TEntityType> QueryFromCriteriaWithoutPagination(TQueryCriteriaType criteria)
     {
         var query = DbSet.AsQueryable();
 
-        if (criteria.IncludeDeleted)
+        if (criteria.OnlyDeleted)
         {
             query = SoftDeleteService.GetSoftDeletedEntries<TEntityType>();
         }
@@ -64,6 +64,11 @@ internal abstract class BaseQueryCrudRepository<TEntityType, TQueryCriteriaType,
     protected IQueryable<TEntityType> ApplyPagination(IQueryable<TEntityType> query, TQueryCriteriaType criteria)
     {
         return query.Skip(criteria.Offset).Take(criteria.Limit);
+    }
+
+    protected IOrderedQueryable<TEntityType> ApplyPagination(IOrderedQueryable<TEntityType> query, TQueryCriteriaType criteria)
+    {
+        return (IOrderedQueryable<TEntityType>)query.Skip(criteria.Offset).Take(criteria.Limit);
     }
 
     protected IOrderedQueryable<TEntityType> ApplySortCriteria(IQueryable<TEntityType> query,

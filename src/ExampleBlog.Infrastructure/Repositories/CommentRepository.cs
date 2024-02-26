@@ -25,6 +25,7 @@ internal class CommentRepository : BaseQueryCrudRepository<Comment, CommentsQuer
 
     protected override IQueryable<Comment> ApplySearchCriteria(IQueryable<Comment> query, string searchText)
     {
-        return query.Where(c => c.Content.Contains(searchText));
+        searchText = searchText.ToLower();
+        return query.Where(c => c.Content.ToLower().Contains(searchText));
     }
 }

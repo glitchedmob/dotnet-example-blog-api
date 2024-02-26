@@ -24,6 +24,7 @@ internal class PostRepsotiroy : BaseQueryCrudRepository<Post, PostsQueryCriteria
 
     protected override IQueryable<Post> ApplySearchCriteria(IQueryable<Post> query, string searchText)
     {
-        return query.Where(p => p.Title.Contains(searchText) || p.Content.Contains(searchText));
+        searchText = searchText.ToLower();
+        return query.Where(p => p.Title.ToLower().Contains(searchText) || p.Content.ToLower().Contains(searchText));
     }
 }
