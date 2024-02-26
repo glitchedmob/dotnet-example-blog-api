@@ -6,6 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.env.example = .env.example
 		.gitignore = .gitignore
 		.editorconfig = .editorconfig
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "docker-compose", "docker-compose.dcproj", "{759C84F0-887A-40B4-B4FF-77070B13EF8E}"
@@ -16,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBlog.Api", "src\Exam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBlog.Core", "src\ExampleBlog.Core\ExampleBlog.Core.csproj", "{8470D788-9712-4349-965C-C206FCCA15B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBlog.Services", "src\ExampleBlog.Services\ExampleBlog.Services.csproj", "{083D05AF-0297-4564-80E3-A1E84DB22B0A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBlog.Application", "src\ExampleBlog.Application\ExampleBlog.Application.csproj", "{083D05AF-0297-4564-80E3-A1E84DB22B0A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBlog.Infrastructure", "src\ExampleBlog.Infrastructure\ExampleBlog.Infrastructure.csproj", "{DBB307B1-DAFD-4473-A8C7-777A83802980}"
 EndProject

@@ -4,7 +4,7 @@ using ExampleBlog.Api.Mapping;
 using ExampleBlog.Api.ModelBinders;
 using ExampleBlog.Api.Swagger;
 using ExampleBlog.Core.Entities;
-using ExampleBlog.Services;
+using ExampleBlog.Application;
 using Newtonsoft.Json.Converters;
 
 var builder = WebApplication.CreateBuilder(args);

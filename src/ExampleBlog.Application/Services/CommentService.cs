@@ -5,7 +5,7 @@ using ExampleBlog.Core.Services;
 using ExampleBlog.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExampleBlog.Services;
+namespace ExampleBlog.Application.Services;
 
 internal class CommentService : ICommentService
 {

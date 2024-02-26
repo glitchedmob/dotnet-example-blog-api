@@ -35,7 +35,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ExampleBlog.Core\ExampleBlog.Core.csproj" />
-      <ProjectReference Include="..\ExampleBlog.Services\ExampleBlog.Services.csproj" />
+      <ProjectReference Include="..\ExampleBlog.Application\ExampleBlog.Application.csproj" />
     </ItemGroup>
 
 </Project>

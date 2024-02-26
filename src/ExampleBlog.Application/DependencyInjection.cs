@@ -1,10 +1,11 @@
-﻿using ExampleBlog.Core.Services;
+﻿using ExampleBlog.Application.Services;
+using ExampleBlog.Core.Services;
 using ExampleBlog.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ExampleBlog.Services;
+namespace ExampleBlog.Application;
 
 public static class DependencyInjection
 {
