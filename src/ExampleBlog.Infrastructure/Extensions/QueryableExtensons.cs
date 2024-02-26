@@ -65,6 +65,14 @@ internal static class QueryableExtensons
         return query.Where(lambda);
     }
 
+    /// <summary>
+    /// Conditionality applies a <c>.Where</c> filter to a <see cref="query"/>
+    /// </summary>
+    /// <param name="query">Query to modify</param>
+    /// <param name="condition">Condition to check</param>
+    /// <param name="predicate">Predicate to apply if <see cref="condition"/> is true</param>
+    /// <typeparam name="TEntityType">Entity for the <see cref="query"/></typeparam>
+    /// <returns></returns>
     public static IQueryable<TEntityType> WhereIf<TEntityType>(this IQueryable<TEntityType> query, bool condition,
         Expression<Func<TEntityType, bool>> predicate)
     {
@@ -99,8 +107,17 @@ internal static class QueryableExtensons
         return ApplyOrder(query, property, "ThenByDescending");
     }
 
+    /// <summary>
+    /// Dynamically adds sorting to a <see cref="query"/> based on a set of <see cref="sortCriteria"/>
+    /// </summary>
+    /// <param name="query">Query to modify</param>
+    /// <param name="sortCriteria">Sorting criteria to apply</param>
+    /// <typeparam name="TEntityType">Entity for the <see cref="query"/></typeparam>
+    /// <typeparam name="TSortableFieldType">An enum representing the supported properties to sort by</typeparam>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException">Thrown if there is a null or empty <see cref="sortCriteria"/></exception>
     public static IOrderedQueryable<TEntityType> ApplyDynamicSorting<TEntityType, TSortableFieldType>(
-        this IQueryable<TEntityType> source,
+        this IQueryable<TEntityType> query,
         IEnumerable<(TSortableFieldType, SortOrder)> sortCriteria)
         where TSortableFieldType : Enum
     {
@@ -119,8 +136,8 @@ internal static class QueryableExtensons
         var firstProperty = GetPropertyNameFromEnum(properties, firstField);
 
         var orderedQuery = firstOrder == SortOrder.Ascending
-            ? source.OrderBy(firstProperty)
-            : source.OrderByDescending(firstProperty);
+            ? query.OrderBy(firstProperty)
+            : query.OrderByDescending(firstProperty);
 
         var otherCriteria = allCriteria.Skip(1).ToList();
 

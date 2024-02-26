@@ -5,6 +5,10 @@ using SoftDeleteServices.Concrete;
 
 namespace ExampleBlog.Infrastructure.Repositories;
 
+/// <summary>
+/// Provides basic CRUD (Create Read Update Delete) functionality for <see cref="TEntityType"/>
+/// </summary>
+/// <typeparam name="TEntityType">The entity type to perform CRUD operations on</typeparam>
 internal abstract class BaseCrudRepository<TEntityType> : ICrudRepository<TEntityType>
     where TEntityType : class, ISoftDelete
 {
