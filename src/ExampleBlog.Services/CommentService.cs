@@ -50,23 +50,23 @@ internal class CommentService : ICommentService
             .ToListAsync();
     }
 
-    public async Task<Comment?> GetByid(int commentId)
+    public async Task<Comment> GetByid(int commentId)
     {
         return await _commentRepository.NewQuery()
             .Include(c => c.Post)
             .Include(c => c.Author)
-            .FirstOrDefaultAsync(c => c.Id == commentId);
+            .FirstAsync(c => c.Id == commentId);
     }
 
     public async Task<Comment> Create(int postId, CreateComment newComment)
     {
-        var post = await _postRepository.NewQuery().FirstOrDefaultAsync(p => p.Id == postId);
-        var user = await _userRepository.NewQuery().FirstOrDefaultAsync();
+        var post = await _postRepository.NewQuery().FirstAsync(p => p.Id == postId);
+        var user = await _userRepository.NewQuery().FirstAsync();
 
         var comment = new Comment
         {
             Content = newComment.Content,
-            PostId = post!.Id,
+            PostId = post.Id,
             AuthorId = user.Id,
         };
 
@@ -76,7 +76,7 @@ internal class CommentService : ICommentService
         return comment;
     }
 
-    public async Task<Comment?> Update(int commentId, UpdateComment commentUpdate)
+    public async Task<Comment> Update(int commentId, UpdateComment commentUpdate)
     {
         var comment = await GetByid(commentId);
 

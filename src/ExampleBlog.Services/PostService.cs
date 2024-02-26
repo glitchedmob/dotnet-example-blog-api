@@ -1,5 +1,4 @@
 ﻿using ExampleBlog.Core.Domain;
-using ExampleBlog.Core.Domain.Common;
 using ExampleBlog.Core.Entities;
 using ExampleBlog.Core.Services;
 using ExampleBlog.Infrastructure.Repositories.Interfaces;
@@ -44,23 +43,23 @@ internal class PostService : IPostService
         };
     }
 
-    public async Task<Post?> GetById(int postId)
+    public async Task<Post> GetById(int postId)
     {
         return await  _postRepository.NewQuery()
             .Include(p => p.Author)
-            .FirstOrDefaultAsync(p => p.Id == postId);
+            .FirstAsync(p => p.Id == postId);
     }
 
-    public async Task<Post?> GetBySlug(string slug)
+    public async Task<Post> GetBySlug(string slug)
     {
         return await  _postRepository.NewQuery()
             .Include(p => p.Author)
-            .FirstOrDefaultAsync(p => p.Slug == slug);
+            .FirstAsync(p => p.Slug == slug);
     }
 
     public async Task<Post> Create(CreatePost newPost)
     {
-        var user = await _userRepository.NewQuery().FirstOrDefaultAsync();
+        var user = await _userRepository.NewQuery().FirstAsync();
 
         var post = new Post
         {
