@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace ExampleBlog.Api.Infrastructure.ModelBinders;
+namespace ExampleBlog.Api.ModelBinders;
 
 public class NestedValueWithoutSuffixModelBinder : IModelBinder
 {

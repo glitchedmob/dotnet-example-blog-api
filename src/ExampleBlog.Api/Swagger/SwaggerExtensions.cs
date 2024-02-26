@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace ExampleBlog.Api.Infrastructure.Swagger;
+namespace ExampleBlog.Api.Swagger;
 
 public static class SwaggerExtensions
 {

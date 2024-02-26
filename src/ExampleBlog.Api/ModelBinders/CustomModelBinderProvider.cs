@@ -2,7 +2,7 @@ using ExampleBlog.Api.Dtos.Common;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
-namespace ExampleBlog.Api.Infrastructure.ModelBinders;
+namespace ExampleBlog.Api.ModelBinders;
 
 public class CustomModelBinderProvider : IModelBinderProvider
 {

@@ -1,4 +1,4 @@
-﻿namespace ExampleBlog.Core.Domain;
+﻿namespace ExampleBlog.Core.Domain.Common;
 
 public class PaginatedResult<TItemType>
 {

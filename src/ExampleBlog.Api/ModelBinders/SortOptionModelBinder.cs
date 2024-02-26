@@ -1,9 +1,8 @@
-using ExampleBlog.Api.Dtos;
 using ExampleBlog.Api.Dtos.Common;
 using ExampleBlog.Core.Domain.Common;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace ExampleBlog.Api.Infrastructure.ModelBinders;
+namespace ExampleBlog.Api.ModelBinders;
 
 public class SortOptionModelBinder : IModelBinder
 {

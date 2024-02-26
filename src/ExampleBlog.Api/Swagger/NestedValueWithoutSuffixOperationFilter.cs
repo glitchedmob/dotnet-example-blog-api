@@ -1,8 +1,8 @@
-﻿using ExampleBlog.Api.Infrastructure.ModelBinders;
+﻿using ExampleBlog.Api.ModelBinders;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace ExampleBlog.Api.Infrastructure.Swagger;
+namespace ExampleBlog.Api.Swagger;
 
 public class NestedValueWithoutSuffixOperationFilter : IOperationFilter
 {

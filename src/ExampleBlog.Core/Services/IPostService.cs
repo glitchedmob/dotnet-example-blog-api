@@ -1,4 +1,5 @@
 ﻿using ExampleBlog.Core.Domain;
+using ExampleBlog.Core.Domain.Common;
 using ExampleBlog.Core.Entities;
 
 namespace ExampleBlog.Core.Services;
