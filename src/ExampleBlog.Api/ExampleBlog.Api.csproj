@@ -28,9 +28,9 @@
     </ItemGroup>
 
     <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Release'">
-        <Exec Command="mkdir $(OutputPath)openapi\v1" />
-        <Exec Command="dotnet swagger tofile --output $(OutputPath)/openapi/v1/openapi.yaml --yaml $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
-        <Exec Command="dotnet swagger tofile --output $(OutputPath)/openapi/v1/openapi.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
+        <MakeDir Directories="$(OutputPath)openapi/v1" />
+        <Exec Command="dotnet swagger tofile --output $(OutputPath)openapi/v1/openapi.yaml --yaml $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" EnvironmentVariables="DOTNET_ROLL_FORWARD=LatestMajor" />
+        <Exec Command="dotnet swagger tofile --output $(OutputPath)openapi/v1/openapi.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" EnvironmentVariables="DOTNET_ROLL_FORWARD=LatestMajor" />
     </Target>
 
     <ItemGroup>
