@@ -11,8 +11,11 @@ This project is a reference architecture for a .NET application based around a s
 - Copy `.env.example` to `.env`
 - Start up database
   - `docker compose up -d postgres`
+- Add `DefaultConnection` connection string
+  - `dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost;Port=5432;Database=example_blog;User Id=example_blog_user;Password=MyP@ssw0rd;" --project src/ExampleBlog.Api/ExampleBlog.Api.csproj`
+    - Make sure to update the values in the connection string if you modified the DB values in `.env`
 - Apply migrations
-  - `dotnet ef database update --project src\ExampleBlog.Infrastructure\ExampleBlog.Infrastructure.csproj --startup-project src\ExampleBlog.Api\ExampleBlog.Api.csproj --context ExampleBlog.Infrastructure.AppDbContext`
+  - `dotnet ef database update --project src/ExampleBlog.Infrastructure/ExampleBlog.Infrastructure.csproj --startup-project src/ExampleBlog.Api/ExampleBlog.Api.csproj --context ExampleBlog.Infrastructure.AppDbContext`
 - For now, you'll need to manually add at least one user into the database
   - Connect using your favorite database tool and run the following query
   - `INSERT INTO "AspNetUsers" ("UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed","PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnabled", "AccessFailedCount") VALUES ('testuser', 'TESTUSER', 'test@test.com', 'TEST@TEST>COM', true, false, false, false, 0);`
