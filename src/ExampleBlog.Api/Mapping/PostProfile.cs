@@ -10,7 +10,7 @@ public class PostProfile : Profile
     public PostProfile()
     {
         CreateMap<CreatePostRequestDto, CreatePost>();
-        CreateMap<GetPostsRequestDto, PostsQueryCriteria>();
+        this.CreateGetQueryDtoToCriteriaMapping<GetPostsRequestDto, PostsQueryCriteria, PostSortableField>();
         CreateMap<Post, PostResponseDto>();
         CreateMap<User, PostResponseDto.AuthorResponseDto>();
     }

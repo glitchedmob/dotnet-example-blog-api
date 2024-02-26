@@ -1,6 +1,6 @@
 ﻿namespace ExampleBlog.Core.Domain.Common;
 
-public class DefaultQueryCriteria
+public abstract class DefaultQueryCriteria<TSortableFieldType> where TSortableFieldType : Enum
 {
     public FieldFilterCriteria<DateTime?>? CreatedAt { get; set; }
     public FieldFilterCriteria<DateTime?>? UpdatedAt { get; set; }
@@ -8,9 +8,5 @@ public class DefaultQueryCriteria
     public bool IncludeDeleted { get; set; } = false;
     public int Limit { get; set; }
     public int Offset { get; set; }
-}
-
-public abstract class DefaultQueryCriteria<TSortableFieldType> : DefaultQueryCriteria where TSortableFieldType : Enum
-{
     public abstract SortCriteria<TSortableFieldType> SortCriteria { get; set; }
 }

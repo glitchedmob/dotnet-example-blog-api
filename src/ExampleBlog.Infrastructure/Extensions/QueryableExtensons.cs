@@ -104,9 +104,17 @@ internal static class QueryableExtensons
         IEnumerable<(TSortableFieldType, SortOrder)> sortCriteria)
         where TSortableFieldType : Enum
     {
+        var allCriteria = (sortCriteria ?? []).ToList();
+
+        if (!allCriteria.Any())
+        {
+            throw new ArgumentException(
+                $"{nameof(sortCriteria)} was null or empty. {nameof(sortCriteria)} must have at least one item");
+        }
+
+
         var properties = typeof(TEntityType).GetProperties();
 
-        var allCriteria = sortCriteria.ToList();
         var (firstField, firstOrder) = allCriteria.First();
         var firstProperty = GetPropertyNameFromEnum(properties, firstField);
 
@@ -138,12 +146,14 @@ internal static class QueryableExtensons
         var type = typeof(TEntityType);
         var arg = Expression.Parameter(type, "e");
         Expression expr = arg;
-        foreach(var prop in props) {
+        foreach (var prop in props)
+        {
             // use reflection (not ComponentModel) to mirror LINQ
             var pi = type.GetProperty(prop) ?? throw new InvalidOperationException();
             expr = Expression.Property(expr, pi);
             type = pi.PropertyType;
         }
+
         var delegateType = typeof(Func<,>).MakeGenericType(typeof(TEntityType), type);
         var lambda = Expression.Lambda(delegateType, expr, arg);
 
@@ -172,4 +182,3 @@ internal static class QueryableExtensons
         throw new ArgumentException($"No property found for enum value '{field}'");
     }
 }
-

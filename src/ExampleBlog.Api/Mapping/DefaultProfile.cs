@@ -10,7 +10,6 @@ public class DefaultProfile : Profile
     public DefaultProfile()
     {
         CreateMap(typeof(FilterOption<>), typeof(FieldFilterCriteria<>));
-        CreateMap<DefaultGetQueryOptions, DefaultQueryCriteria>();
         CreateMap(typeof(PaginatedResult<>), typeof(PaginatedResponseDto<>));
     }
 }

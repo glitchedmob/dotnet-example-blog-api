@@ -10,7 +10,7 @@ public class CommentProfile : Profile
     public CommentProfile()
     {
         CreateMap<CreateCommentRequestDto, CreateComment>();
-        CreateMap<GetCommentsRequestDto, CommentsQueryCriteria>();
+        this.CreateGetQueryDtoToCriteriaMapping<GetCommentsRequestDto, CommentsQueryCriteria, CommentSortableField>();
         CreateMap<Comment, CommentListItemResponseDto>();
         CreateMap<Comment, CommentResponseDto>();
         CreateMap<User, CommentResponseDto.AuthorResponseDto>();
