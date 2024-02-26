@@ -14,16 +14,16 @@ internal class CommentRepository : BaseCrudRepository<Comment>, ICommentReposito
     {
     }
 
-    public IQueryable<Comment> QueryFromCriteria(CommentsQueryCriteria criteria)
+    public IOrderedQueryable<Comment> QueryFromCriteria(CommentsQueryCriteria criteria)
     {
-        var orderedQuery  = OrderedQueryFromDefaultCriteria<Comment, CommentsQueryCriteria, CommentSortableField>(criteria);
+        var query  = QueryFromDefaultCriteria<Comment>(criteria);
 
-        var query = orderedQuery
+        query = query
             .WhereIf(criteria.Ids.Any(), e => criteria.Ids.Contains(e.Id))
             .WhereIf(criteria.PostIds.Any(), e => criteria.PostIds.Contains(e.PostId))
             .WhereIf(criteria.AuthorIds.Any(), e => criteria.AuthorIds.Contains(e.AuthorId));
 
-        return query;
+        return ApplySortCriteria<CommentsQueryCriteria, CommentSortableField>(query, criteria);
     }
 
     protected override IQueryable<Comment> ApplySearchCriteria(IQueryable<Comment> query, string searchText)

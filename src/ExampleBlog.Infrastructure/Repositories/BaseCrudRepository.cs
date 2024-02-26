@@ -77,15 +77,10 @@ internal abstract class BaseCrudRepository<TEntityType> : ICrudRepository<TEntit
         return query;
     }
 
-    protected IOrderedQueryable<TTimeStampedEntityType>
-        OrderedQueryFromDefaultCriteria<TTimeStampedEntityType, TQueryCriteriaType, TSortableFieldType>(
-            TQueryCriteriaType criteria)
-        where TTimeStampedEntityType : class, TEntityType, ITimeStamped
+    protected IOrderedQueryable<TEntityType> ApplySortCriteria<TQueryCriteriaType, TSortableFieldType>(IQueryable<TEntityType> query, TQueryCriteriaType criteria)
         where TSortableFieldType : Enum
-        where TQueryCriteriaType : DefaultQueryCriteria<TSortableFieldType>
+        where TQueryCriteriaType : ISortQueryCriteria<TSortableFieldType>
     {
-        var query = QueryFromDefaultCriteria<TTimeStampedEntityType>(criteria);
-
         return query.ApplyDynamicSorting(criteria.SortCriteria);
     }
 
