@@ -7,9 +7,9 @@ using SoftDeleteServices.Concrete;
 
 namespace ExampleBlog.Infrastructure.Repositories;
 
-internal class PostRepsotiroy : BaseQueryCrudRepository<Post, PostsQueryCriteria, PostSortableField>, IPostRepository
+internal class PostRepository : BaseQueryCrudRepository<Post, PostsQueryCriteria, PostSortableField>, IPostRepository
 {
-    public PostRepsotiroy(AppDbContext context, CascadeSoftDelServiceAsync<ISoftDelete> softDeleteService) : base(
+    public PostRepository(AppDbContext context, CascadeSoftDelServiceAsync<ISoftDelete> softDeleteService) : base(
         context, softDeleteService)
     {
     }

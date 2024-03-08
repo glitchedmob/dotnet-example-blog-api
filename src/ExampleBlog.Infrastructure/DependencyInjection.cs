@@ -23,7 +23,7 @@ public static class DependencyInjection
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
-        services.AddScoped<IPostRepository, PostRepsotiroy>();
+        services.AddScoped<IPostRepository, PostRepository>();
 
         return services;
     }
